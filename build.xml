@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Copyright 2013 Charles University in Prague
+  - Copyright 2013 Vojtech Horky
+  - 
+  - Licensed under the Apache License, Version 2.0 (the "License");
+  - you may not use this file except in compliance with the License.
+  - You may obtain a copy of the License at
+  -
+  -     http://www.apache.org/licenses/LICENSE-2.0
+  -
+  - Unless required by applicable law or agreed to in writing, software
+  - distributed under the License is distributed on an "AS IS" BASIS,
+  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  - See the License for the specific language governing permissions and
+  - limitations under the License.
+  -->
+<project basedir="." name="SPL" default="main">
+	<property file="local-settings.ini" />
+	
+	<property name="java.src.dir" value="src/java" />
+	<property name="java.test.src.dir" value="src/test-java" />
+	
+	<property name="lib.dir" value="lib" />
+	
+	<property name="build.dir" value="out" />
+	<property name="classes.build.dir" value="${build.dir}/classes" />
+	<property name="test.classes.build.dir" value="${build.dir}/test-classes" />
+	<property name="test.results.dir" value="${build.dir}/test-results" />
+	<property name="jar.build.dir" value="${build.dir}/jars" /> 
+	<property name="javadoc.build.dir" value="${build.dir}/javadoc" />
+	
+	<property name="agent.jar.file" value="spl-agent.jar" />
+	
+	<target name="main" depends="compile">
+	</target>
+	
+	<target name="compile">
+		<mkdir dir="${classes.build.dir}" />
+		<javac srcdir="${java.src.dir}" destdir="${classes.build.dir}"
+				includeantruntime="false">
+			<compilerarg value="-Xlint:all"/>
+			<classpath path="${lib.dir}/javassist.jar" />
+		</javac>
+	</target>
+	
+	<target name="agent" depends="compile">
+		<mkdir dir="${jar.build.dir}" />
+		<jar
+			destfile="${jar.build.dir}/${agent.jar.file}"
+			basedir="${classes.build.dir}"
+			includes="cz/cuni/mff/d3s/spl/**"
+		>
+			<zipgroupfileset dir="${lib.dir}" includes="**/javassist.jar" />
+			<manifest>
+				<attribute
+					name="Premain-Class"
+					value="cz.cuni.mff.d3s.spl.agent.AgentMain" />
+				<attribute
+					name="Can-Retransform-Classes"
+					value="true" />
+				<attribute
+					name="Can-Redefine-Classes"
+					value="true" />
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="compile-tests" depends="compile">
+		<mkdir dir="${test.classes.build.dir}" />
+		<javac srcdir="${java.test.src.dir}"
+				destdir="${test.classes.build.dir}"
+				includeantruntime="false">
+			<classpath>
+				<pathelement path="${junit.jar.path}"/>
+				<pathelement path="${classes.build.dir}" />
+			</classpath>
+			<compilerarg value="-Xlint:all"/>
+		</javac>
+	</target>
+	
+	
+	<target name="refdoc">
+		<mkdir dir="${javadoc.build.dir}" />
+		<javadoc destdir="${javadoc.build.dir}" author="true"
+				version="true" use="true"
+				overview="${java.src.dir}/overview.html"
+				windowtitle="${ant.project.name}">
+			<packageset dir="${java.src.dir}" defaultexcludes="yes">
+			</packageset>
+			<doctitle>
+				<![CDATA[<h1>
+				Stochastic Performance Logic (SPL) adaptation
+				framework for Java</h1>
+				]]>
+			</doctitle>
+			<bottom>
+				<![CDATA[
+				<i>Copyright &#169; 2013
+				Charles University in Prague.</i>
+				]]>
+			</bottom>
+		</javadoc>
+	</target>
+	
+	<target name="test" depends="compile-tests,agent">
+		<mkdir dir="${test.results.dir}"/>
+		<junit printsummary="yes" haltonfailure="no">
+			<classpath>
+				<pathelement path="${junit.jar.path}"/>
+				<pathelement path="${test.classes.build.dir}"/>
+				<pathelement path="${classes.build.dir}"/>
+			</classpath>
+			
+			<jvmarg value="-javaagent:${jar.build.dir}/${agent.jar.file}=${extra.agent.options}" />
+		
+			<formatter type="plain"/>
+
+			<batchtest fork="yes" todir="${test.results.dir}">
+				<fileset dir="${test.classes.build.dir}">
+					<include name="**/*Test*.class"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+</project>
