@@ -14,25 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cz.cuni.mff.d3s.spl.agent;
+package cz.cuni.mff.d3s.spl.annotations;
 
-import java.lang.instrument.Instrumentation;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-/** Java agent for run-time instrumentation for SPL. */
-public class AgentMain {
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface AtStart {
 	
-	/** Agent main method. */
-	public static void premain(String argsAsString,
-			Instrumentation instrumentation) throws Exception {
-		AgentArgumentParser args = AgentArgumentParser.create(argsAsString);
-		
-		InstrumentationController.initialize(instrumentation);
-		
-		if (args.hasOption("spl.class")) {
-			String[] splClassNames = args.getValue("spl.class", "").split(":");
-			for (String splClass : splClassNames) {
-				UserCode.runFromClass(splClass);
-			}
-		}
-	}
 }

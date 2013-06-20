@@ -31,6 +31,18 @@
 	<property name="javadoc.build.dir" value="${build.dir}/javadoc" />
 	
 	<property name="agent.jar.file" value="spl-agent.jar" />
+		
+	<property environment="env" />
+	<condition property="exec.diff" value="colordiff">
+		<available file="colordiff" filepath="${env.PATH}" />
+	</condition>
+	<condition property="exec.diff" value="diff">
+		<available file="diff" filepath="${env.PATH}" />
+	</condition>
+	<property name="exec.diff" value="" />
+	<condition property="exec.diff.not.found">
+		<equals arg1="${exec.diff}" arg2="" />
+	</condition>
 	
 	<target name="main" depends="compile">
 	</target>
@@ -122,6 +134,26 @@
 				</fileset>
 			</batchtest>
 		</junit>
+	</target>
+	
+	<target name="manualtest" depends="compile-tests,agent">
+		<fail if="exec.diff.not.found" message="You need diff(1) to run these tests." />
+		
+		<echo>Running ExecAnnotationWorks...</echo>
+		<java classname="cz.cuni.mff.d3s.spl.manualtests.ExecAnnotationWorks"
+			fork="yes"
+			output="${test.classes.build.dir}/cz/cuni/mff/d3s/spl/manualtests/ExecAnnotationWorks.output">
+			<jvmarg value="-javaagent:${jar.build.dir}/${agent.jar.file}=spl.class=cz.cuni.mff.d3s.spl.manualtests.ExecAnnotationWorks"/>
+			<classpath>
+				<pathelement path="${test.classes.build.dir}"/>
+			</classpath>
+		</java>
+		<exec executable="${exec.diff}">
+			<arg value="-ud" />
+			<arg file="${java.test.src.dir}/cz/cuni/mff/d3s/spl/manualtests/ExecAnnotationWorks.expected"/>
+			<arg file="${test.classes.build.dir}/cz/cuni/mff/d3s/spl/manualtests/ExecAnnotationWorks.output"/>
+		</exec>
+		<echo> ...finished (see diff above).</echo>
 	</target>
 	
 	<target name="clean">
