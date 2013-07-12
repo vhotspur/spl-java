@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
 
 import cz.cuni.mff.d3s.spl.core.Data;
 import cz.cuni.mff.d3s.spl.core.Formula;
-import cz.cuni.mff.d3s.spl.core.MathematicalApparatus;
+import cz.cuni.mff.d3s.spl.core.MathematicalInterpretation;
 import cz.cuni.mff.d3s.spl.core.Result;
 
 public class SimpleFormulas {
@@ -29,7 +29,7 @@ public class SimpleFormulas {
 	}
 	
 	private static class LeftSmallerThanRight implements Formula {
-		private MathematicalApparatus apparatus;
+		private MathematicalInterpretation apparatus;
 		private String leftName;
 		private Data leftData;
 		private String rightName;
@@ -42,7 +42,7 @@ public class SimpleFormulas {
 		}
 
 		@Override
-		public void setApparatus(MathematicalApparatus apparatus) {
+		public void setInterpreation(MathematicalInterpretation apparatus) {
 			this.apparatus = apparatus;
 		}
 

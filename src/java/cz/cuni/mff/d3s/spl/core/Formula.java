@@ -36,9 +36,9 @@ public interface Formula {
 	/** Set how to evaluate statistical tests and other mathematical
 	 * operations.
 	 * 
-	 * @param apparatus The mathematical apparatus to use.
+	 * @param interpretation The mathematical interpretation to use.
 	 */
-	void setApparatus(MathematicalApparatus apparatus);
+	void setInterpreation(MathematicalInterpretation interpretation);
 	
 	/** Bind given variable alias to a concrete data source.
 	 * 

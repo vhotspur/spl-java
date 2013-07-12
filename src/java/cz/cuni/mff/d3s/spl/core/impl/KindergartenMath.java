@@ -16,11 +16,11 @@
  */
 package cz.cuni.mff.d3s.spl.core.impl;
 
-import cz.cuni.mff.d3s.spl.core.MathematicalApparatus;
+import cz.cuni.mff.d3s.spl.core.MathematicalInterpretation;
 import cz.cuni.mff.d3s.spl.core.Result;
 import cz.cuni.mff.d3s.spl.core.StatisticSnapshot;
 
-public class KindergartenMath implements MathematicalApparatus {
+public class KindergartenMath implements MathematicalInterpretation {
 	public static final KindergartenMath INSTANCE = new KindergartenMath();
 	private static final int MIN_SAMPLE_COUNT = 2;
 	

@@ -22,7 +22,7 @@ package cz.cuni.mff.d3s.spl.core;
  * The methods include statistical tests for deciding whether some random
  * variable is greater than another one or for finding regressions.
  */
-public interface MathematicalApparatus {
+public interface MathematicalInterpretation {
 	/** Decides whether one random variable is greater than another one.
 	 * 
 	 * @param left The supposed greater variable.
