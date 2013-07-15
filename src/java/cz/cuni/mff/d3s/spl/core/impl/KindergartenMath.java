@@ -38,4 +38,18 @@ public class KindergartenMath implements MathematicalInterpretation {
 		}
 	}
 
+
+	@Override
+	public Result isSmallerThan(StatisticSnapshot variable, double constant) {
+		if (variable.getSampleCount() < MIN_SAMPLE_COUNT) {
+			return Result.CANNOT_COMPUTE;
+		}
+		double meanDifference = constant - variable.getArithmeticMean();
+		if (meanDifference > 0) {
+			return Result.TRUE;
+		} else {
+			return Result.FALSE;
+		}
+	}
+
 }

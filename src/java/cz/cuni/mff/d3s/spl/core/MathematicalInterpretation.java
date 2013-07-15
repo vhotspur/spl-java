@@ -31,4 +31,13 @@ public interface MathematicalInterpretation {
 	 * is greater than <code>right</code>.
 	 */
 	Result isGreaterThan(StatisticSnapshot left, StatisticSnapshot right);
+	
+	/** Decides whether random variable is smaller than given constant.
+	 * 
+	 * @param variable Supposedly smaller random variable.
+	 * @param constant Constant to compare with.
+	 * @return Whether it is statistically sound to say that
+	 * <code>variable</code> is smaller than <code>constant</code>.
+	 */
+	Result isSmallerThan(StatisticSnapshot variable, double constant);
 }
