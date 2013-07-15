@@ -28,6 +28,10 @@ public class SimpleFormulas {
 		return new LeftSmallerThanRight(a, b);
 	}
 	
+	public static Formula createSmallerThanConst(String var, double constant) {
+		return new SmallerThanConstant(var, constant);
+	}
+	
 	private static class LeftSmallerThanRight implements Formula {
 		private MathematicalInterpretation apparatus;
 		private String leftName;
@@ -63,6 +67,38 @@ public class SimpleFormulas {
 			return apparatus.isGreaterThan(rightData.getStatisticSnapshot(),
 				leftData.getStatisticSnapshot());
 		}
+	}
+	
+	private static class SmallerThanConstant implements Formula {
+		private MathematicalInterpretation interpretation;
+		private String sourceName;
+		private Data data;
+		private double constant;
 		
+		public SmallerThanConstant(String name, double c) {
+			interpretation = KindergartenMath.INSTANCE;
+			sourceName = name;
+			constant = c;
+		}
+
+		@Override
+		public void setInterpreation(MathematicalInterpretation interpretation) {
+			this.interpretation = interpretation;
+		}
+
+		@Override
+		public void bind(String variable, Data data)
+				throws NoSuchElementException {
+			if (sourceName.equals(variable)) {
+				this.data = data;
+			} else {
+				throw new NoSuchElementException("No such variable in the formula.");
+			}
+		}
+
+		@Override
+		public Result evaluate() {
+			return interpretation.isSmallerThan(data.getStatisticSnapshot(), constant);
+		}
 	}
 }
