@@ -32,10 +32,14 @@ public class Main {
 		
 		server.start();
 		
+		System.out.println("Listening on localhost:8888. Hit <Enter> to terminate.");
+		
 		try {
 			System.in.read();
 		} catch (IOException e) {
 		}
+		
+		System.out.println("Terminating...");
 		
 		server.stop(0);
 	}

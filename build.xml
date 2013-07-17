@@ -20,6 +20,7 @@
 	
 	<property name="java.src.dir" value="src/java" />
 	<property name="java.test.src.dir" value="src/test-java" />
+	<property name="java.demo.src.dir" value="src/demo-java" />
 	
 	<property name="lib.dir" value="lib" />
 	
@@ -27,6 +28,7 @@
 	<property name="classes.build.dir" value="${build.dir}/classes" />
 	<property name="test.classes.build.dir" value="${build.dir}/test-classes" />
 	<property name="test.results.dir" value="${build.dir}/test-results" />
+	<property name="demo.classes.build.dir" value="${build.dir}/demo-classes" />
 	<property name="jar.build.dir" value="${build.dir}/jars" /> 
 	<property name="javadoc.build.dir" value="${build.dir}/javadoc" />
 	
@@ -86,6 +88,19 @@
 			<classpath>
 				<pathelement path="${junit.jar.path}"/>
 				<pathelement path="${classes.build.dir}" />
+			</classpath>
+			<compilerarg value="-Xlint:all"/>
+		</javac>
+	</target>
+	
+	<target name="compile-demos" depends="compile">
+		<mkdir dir="${demo.classes.build.dir}" />
+		<javac srcdir="${java.demo.src.dir}"
+				destdir="${demo.classes.build.dir}"
+				includeantruntime="false">
+			<classpath>
+				<pathelement path="${classes.build.dir}" />
+				<pathelement path="${lib.dir}/gral-core-0.9-SNAPSHOT.jar" />
 			</classpath>
 			<compilerarg value="-Xlint:all"/>
 		</javac>
@@ -154,6 +169,20 @@
 			<arg file="${test.classes.build.dir}/cz/cuni/mff/d3s/spl/manualtests/ExecAnnotationWorks.output"/>
 		</exec>
 		<echo> ...finished (see diff above).</echo>
+	</target>
+	
+	<target name="run-demo-imagequality" depends="compile-demos,agent">
+		<echo message="Open ${java.demo.src.dir}/cz/cuni/mff/d3s/spl/demo/imagequality/html/index.html" />
+		<echo message="in your browser - the precision of the graph would change" />
+		<echo message="based on the overall load of your system." />
+		<java classname="cz.cuni.mff.d3s.spl.demo.imagequality.Main"
+			fork="yes">
+			<classpath>
+				<pathelement path="${classes.build.dir}" />
+				<pathelement path="${lib.dir}/gral-core-0.9-SNAPSHOT.jar" />
+				<pathelement path="${demo.classes.build.dir}"/>
+			</classpath>
+		</java>
 	</target>
 	
 	<target name="clean">
