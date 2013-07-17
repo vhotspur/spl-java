@@ -141,14 +141,21 @@
 			
 			<jvmarg value="-javaagent:${jar.build.dir}/${agent.jar.file}=${extra.agent.options}" />
 		
-			<formatter type="plain"/>
-
+			<formatter type="plain" />
+			<formatter type="xml" />
+			
 			<batchtest fork="yes" todir="${test.results.dir}">
 				<fileset dir="${test.classes.build.dir}">
 					<include name="**/*Test*.class"/>
 				</fileset>
 			</batchtest>
 		</junit>
+		<junitreport todir="${test.results.dir}">
+			<fileset dir="${test.results.dir}">
+				<include name="TEST-*.xml"/>
+			</fileset>
+			<report format="frames" todir="${test.results.dir}/html"/>
+		</junitreport>
 	</target>
 	
 	<target name="manualtest" depends="compile-tests,agent">
