@@ -23,6 +23,7 @@
 	<property name="java.demo.src.dir" value="src/demo-java" />
 	
 	<property name="lib.dir" value="lib" />
+	<property name="junit.jar.path" value="lib/junit-4.11.jar" />
 	
 	<property name="build.dir" value="out" />
 	<property name="classes.build.dir" value="${build.dir}/classes" />
