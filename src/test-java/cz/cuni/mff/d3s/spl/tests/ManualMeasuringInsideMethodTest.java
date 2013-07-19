@@ -24,9 +24,9 @@ import cz.cuni.mff.d3s.spl.agent.Facade;
 import cz.cuni.mff.d3s.spl.agent.SPL;
 import cz.cuni.mff.d3s.spl.core.Data;
 import cz.cuni.mff.d3s.spl.core.MeasurementSite;
-import cz.cuni.mff.d3s.spl.core.StatisticSnapshot;
 import cz.cuni.mff.d3s.spl.measure.DurationStopwatch;
 import cz.cuni.mff.d3s.spl.measure.SingleMethodMeasuring;
+import static cz.cuni.mff.d3s.spl.tests.TestUtils.assertSampleCount;
 
 public class ManualMeasuringInsideMethodTest implements Runnable {
 	private static final String SITE_ID = "user:test:SimpleMeasuring";
@@ -52,8 +52,8 @@ public class ManualMeasuringInsideMethodTest implements Runnable {
 	@Test
 	public void singleThreadedMeasuring() {
 		this.run();
-			
-		assertEquals(LOOPS, getStats().getSampleCount());
+		
+		assertSampleCount(LOOPS, getData());
 	}
 	
 	@Test
@@ -71,12 +71,11 @@ public class ManualMeasuringInsideMethodTest implements Runnable {
 			threads[i].join();
 		}
 		
-		assertEquals(THREADS * LOOPS, getStats().getSampleCount());
+		assertSampleCount(THREADS * LOOPS, getData());
 	}
 	
-	private StatisticSnapshot getStats() {
-		Data data = SPL.getDataSource(SITE_ID);
-		return data.getStatisticSnapshot();
+	private Data getData() {
+		return SPL.getDataSource(SITE_ID);
 	}
 	
 	@Override
