@@ -56,7 +56,7 @@ public class SelfInstrumentationTest implements Runnable {
 		 */
 		assertTrue("Instrumentation should record at least one pass",
 			finalStats.getSampleCount() > 0);
-		assertEquals(LOOPS, finalStats.getSampleCount());
+		TestUtils.assertSampleCount(LOOPS, data);
 		assertEquals((double) SLEEP_LENGTH_MILLIS,
 			finalStats.getArithmeticMean() / (1000 * 1000), EPSILON);
 	}
@@ -69,14 +69,6 @@ public class SelfInstrumentationTest implements Runnable {
 	}
 	
 	protected void hotspot() {
-		sleep(SLEEP_LENGTH_MILLIS);
-	}
-	
-	private void sleep(int millis) {
-		try {
-			Thread.sleep(millis);
-		} catch (InterruptedException e) {
-			/* Silently ignore. */
-		}
+		TestUtils.tryToSleep(SLEEP_LENGTH_MILLIS);
 	}
 }
