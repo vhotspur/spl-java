@@ -17,21 +17,15 @@
 package cz.cuni.mff.d3s.spl.tests.probes.manual;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import cz.cuni.mff.d3s.spl.core.Data;
-import cz.cuni.mff.d3s.spl.core.StatisticSnapshot;
 import cz.cuni.mff.d3s.spl.core.impl.PlainBufferDataSource;
 import cz.cuni.mff.d3s.spl.probe.ManualProbeControllerBuilder;
 import cz.cuni.mff.d3s.spl.probe.ProbeController;
 import cz.cuni.mff.d3s.spl.tests.probes.AcceptOnlyOddSizes;
+import static cz.cuni.mff.d3s.spl.tests.TestUtils.assertSampleCount;
 
 public class ManualProbesTest {
-	
-	private void assertSampleCount(long expected, Data source) {
-		StatisticSnapshot stats = source.getStatisticSnapshot();
-		assertEquals(expected, stats.getSampleCount());
-	}
 	
 	@Test
 	public void allRunsCollected() {

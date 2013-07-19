@@ -21,32 +21,23 @@ import java.net.URL;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import cz.cuni.mff.d3s.spl.core.Data;
-import cz.cuni.mff.d3s.spl.core.StatisticSnapshot;
 import cz.cuni.mff.d3s.spl.core.impl.PlainBufferDataSource;
 import cz.cuni.mff.d3s.spl.instrumentation.CommonExtraArgument;
 import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgumentsBuilder;
 import cz.cuni.mff.d3s.spl.probe.InstrumentationProbeControllerBuilder;
 import cz.cuni.mff.d3s.spl.probe.ProbeController;
+import cz.cuni.mff.d3s.spl.tests.TestUtils;
 import cz.cuni.mff.d3s.spl.tests.probes.AcceptOnlyOddSizes;
+import static cz.cuni.mff.d3s.spl.tests.TestUtils.assertSampleCount;
 
 public class InstrumentationProbesTest {
-	
-	private void assertSampleCount(long expected, Data source) {
-		StatisticSnapshot stats = source.getStatisticSnapshot();
-		assertEquals(expected, stats.getSampleCount());
-	}
 	
 	private void activateAndWait(ProbeController ctl) {
 		ctl.activate();
 		
-		try {
-			Thread.sleep(21);
-		} catch (InterruptedException e) {
-			/* Silently ignore. */
-		}
+		TestUtils.tryToSleep(21);
 	}
 	
 	private InstrumentationProbeControllerBuilder probeBuilder;
