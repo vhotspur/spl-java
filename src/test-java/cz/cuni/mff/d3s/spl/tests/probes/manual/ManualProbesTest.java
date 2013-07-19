@@ -67,7 +67,7 @@ public class ManualProbesTest {
 			a.action();
 		}
 		
-		assertSampleCount(100, data);
+		assertSampleCount(50, data);
 	}
 	
 	@Test
@@ -89,7 +89,7 @@ public class ManualProbesTest {
 			a.action();
 		}
 		
-		assertSampleCount(51, dataOdd);
-		assertSampleCount(50, dataEven);
+		assertSampleCount(50, dataOdd);
+		assertSampleCount(51, dataEven);
 	}
 }
