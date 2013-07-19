@@ -18,10 +18,39 @@ package cz.cuni.mff.d3s.spl.probe;
 
 import cz.cuni.mff.d3s.spl.measure.DurationStopwatch;
 
-public class ProbeStopwatch {
+public class ProbeStopwatch implements DurationStopwatch {
 
 	public static DurationStopwatch start(Probe probe, Object... args) {
-		return null;
+		if (!probe.isActive(args)) {
+			return new ProbeStopwatch();
+		}
+		ProbeStopwatch stopwatch = new ProbeStopwatch(probe);
+		stopwatch.startTime = System.nanoTime();
+		return stopwatch;
+	}
+	
+	private boolean active;
+	private Probe probe;
+	private long startTime;
+	
+	private ProbeStopwatch() {
+		active = false;
+	}
+	
+	private ProbeStopwatch(Probe probe) {
+		active = true;
+		this.probe = probe;
+	}
+	
+	@Override
+	public void done(Object... args) {
+		if (!active) {
+			return;
+		}
+		
+		long now = System.nanoTime();
+		probe.submit(startTime, now - startTime, args);
 	}
 
+	
 }

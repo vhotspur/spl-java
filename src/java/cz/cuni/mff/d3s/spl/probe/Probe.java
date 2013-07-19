@@ -17,5 +17,6 @@
 package cz.cuni.mff.d3s.spl.probe;
 
 public interface Probe {
-
+	public boolean isActive(Object... args);
+	public void submit(long when, long duration, Object... args);
 }
