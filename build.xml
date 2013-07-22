@@ -133,7 +133,7 @@
 	
 	<target name="test" depends="compile-tests,agent">
 		<mkdir dir="${test.results.dir}"/>
-		<junit printsummary="yes" haltonfailure="no">
+		<junit printsummary="withOutAndErr" haltonfailure="no">
 			<classpath>
 				<pathelement path="${junit.jar.path}"/>
 				<pathelement path="${test.classes.build.dir}"/>
