@@ -16,6 +16,9 @@
  */
 package cz.cuni.mff.d3s.spl.probe;
 
+import java.util.Collections;
+import java.util.List;
+
 import cz.cuni.mff.d3s.spl.agent.SPL;
 import cz.cuni.mff.d3s.spl.core.Data;
 import cz.cuni.mff.d3s.spl.core.InvocationFilter;
@@ -25,12 +28,15 @@ import cz.cuni.mff.d3s.spl.core.impl.ForwardingMeasurementConsumer;
 import cz.cuni.mff.d3s.spl.core.impl.PlainBufferDataSource;
 import cz.cuni.mff.d3s.spl.instrumentation.ClassLoaderFilter;
 import cz.cuni.mff.d3s.spl.instrumentation.CommonExtraArgument;
-import cz.cuni.mff.d3s.spl.instrumentation.ExtraArguments;
+import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgument;
+import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgumentsBuilder;
 
 public class InstrumentationProbeControllerBuilder {
 	private ClassLoaderFilter loaderFilter = null;
 	private InvocationFilter invocationFilter = null;
+	private List<ExtraArgument> invocationFilterArgs = null;
 	private MeasurementConsumer dataConsumer = null;
+	private List<ExtraArgument> dataConsumerArgs = null;
 	private String methodName;
 	private boolean finalized = false;
 
@@ -43,7 +49,7 @@ public class InstrumentationProbeControllerBuilder {
 			setDefaults();
 		}
 		
-		return new SingleMethodInstrumentationProbeController(loaderFilter, invocationFilter, dataConsumer, methodName);
+		return new SingleMethodInstrumentationProbeController(loaderFilter, invocationFilter, invocationFilterArgs, dataConsumer, dataConsumerArgs, methodName);
 	}
 
 	public void forwardSamplesToDataSource(Data source) {
@@ -56,10 +62,12 @@ public class InstrumentationProbeControllerBuilder {
 		dataConsumer = consumer;
 	}
 
-	public void setConsumer(MeasurementConsumer consumer, ExtraArguments extraArguments) {
+	public void setConsumer(MeasurementConsumer consumer, List<ExtraArgument> extraArguments) {
 		checkNotFinalized();
 		
-		// TODO
+		dataConsumer = consumer;
+		// FIXME: make a copy
+		dataConsumerArgs = extraArguments;
 	}
 
 	public void setInvocationFilter(InvocationFilter filter, CommonExtraArgument... parameters) {
@@ -67,7 +75,8 @@ public class InstrumentationProbeControllerBuilder {
 		
 		invocationFilter = filter;
 		
-		// TODO
+		ExtraArgumentsBuilder builder = ExtraArgumentsBuilder.createFromCommonArguments(parameters);
+		invocationFilterArgs = builder.get();
 	}
 
 	public void setClassLoaderFilter(ClassLoaderFilter filter) {
@@ -83,10 +92,16 @@ public class InstrumentationProbeControllerBuilder {
 		if (invocationFilter == null) {
 			setInvocationFilter(ConstLikeImplementations.ALWAYS_MEASURE_FILTER);
 		}
+		if (invocationFilterArgs == null) {
+			invocationFilterArgs = Collections.emptyList();
+		}
 		if (dataConsumer == null) {
 			Data source = new PlainBufferDataSource();
 			SPL.registerDataSource(methodName, source);
 			forwardSamplesToDataSource(source);
+		}
+		if (dataConsumerArgs == null) {
+			dataConsumerArgs = Collections.emptyList();
 		}
 	}
 	

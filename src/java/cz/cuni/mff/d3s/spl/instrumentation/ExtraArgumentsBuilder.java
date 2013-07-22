@@ -16,13 +16,49 @@
  */
 package cz.cuni.mff.d3s.spl.instrumentation;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class ExtraArgumentsBuilder {
+	private List<ExtraArgument> args = new LinkedList<>();
 
-	public void addField(String string) {
+	public void addField(String name) {
+		args.add(ExtraArgument.createField(name));
+	}
+	
+	public void addParameter(int position) {
+		args.add(ExtraArgument.createParameter(position));
+	}
+	
+	public void addThis() {
+		args.add(ExtraArgument.createThis());
 	}
 
-	public ExtraArguments get() {
-		return null;
+	public List<ExtraArgument> get() {
+		return args;
 	}
 
+	public static ExtraArgumentsBuilder createFromCommonArguments(CommonExtraArgument... parameters) {
+		ExtraArgumentsBuilder builder = new ExtraArgumentsBuilder();
+		for (CommonExtraArgument arg : parameters) {
+			switch (arg) {
+			case THIS:
+				builder.addThis();
+				break;
+			case METHOD_PARAM_1:
+				builder.addParameter(1);
+				break;
+			case METHOD_PARAM_2:
+				builder.addParameter(1);
+				break;
+			case METHOD_PARAM_3:
+				builder.addParameter(1);
+				break;
+			case METHOD_PARAM_4:
+				builder.addParameter(1);
+				break;
+			}
+		}
+		return builder;
+	}
 }
