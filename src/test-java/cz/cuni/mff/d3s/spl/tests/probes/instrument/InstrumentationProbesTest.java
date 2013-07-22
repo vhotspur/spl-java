@@ -75,6 +75,32 @@ public class InstrumentationProbesTest {
 	}
 	
 	@Test
+	public void deactivationWorks() {
+		probeBuilder.forwardSamplesToDataSource(data);
+		
+		ProbeController probeCtl = probeBuilder.get();
+		
+		activateAndWait(probeCtl);
+		
+		for (int i = 0; i < 100; i++) {
+			Action a = new Action(456);
+			a.action(i);
+		}
+		
+		assertSampleCount(100, data);
+		
+		probeCtl.deactivate();
+		TestUtils.tryToSleep(21);
+		
+		for (int i = 0; i < 100; i++) {
+			Action a = new Action(456);
+			a.action(i);
+		}
+		
+		assertSampleCount(100, data);
+	}
+	
+	@Test
 	public void allRunsCollected() {
 		probeBuilder.forwardSamplesToDataSource(data);
 		
