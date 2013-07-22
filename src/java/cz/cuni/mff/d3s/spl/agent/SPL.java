@@ -23,10 +23,12 @@ import java.util.NoSuchElementException;
 import cz.cuni.mff.d3s.spl.core.Data;
 import cz.cuni.mff.d3s.spl.core.MeasurementSite;
 import cz.cuni.mff.d3s.spl.instrumentation.InstrumentationSnippet;
+import cz.cuni.mff.d3s.spl.probe.Probe;
 
 public final class SPL {
 	private static Map<String, MeasurementSite> sites = new HashMap<>();
 	private static Map<String, Data> datas = new HashMap<>();
+	private static Map<String, Probe> probes = new HashMap<>();
 	
 	public static synchronized void __clear() {
 		sites.clear();
@@ -94,6 +96,41 @@ public final class SPL {
 		}
 		return result;
 	}
+
+	
+	public static void registerProbe(String id, Probe probe) {
+		if ((id == null) || id.isEmpty()) {
+			throw new IllegalArgumentException("Probe id cannot be empty.");
+		}
+		if (probe == null) {
+			throw new IllegalArgumentException("Probe cannot be null.");
+		}
+		synchronized (probes) {
+			if (probes.containsKey(id)) {
+				// FIXME: better exception class
+				throw new IllegalArgumentException("Probe with given id already exists.");
+			}
+			probes.put(id, probe);
+		}
+	}
+	
+	public static void unregisterProbe(String id) {
+		synchronized (probes) {
+			probes.remove(id);
+		}
+	}
+	
+	public static Probe getProbe(String id) {
+		Probe result = null;
+		synchronized (probes) {
+			result = probes.get(id);
+		}
+		if (result == null) {
+			throw new NoSuchElementException("Data source with given id not found.");
+		}
+		return result;
+	}
+
 	
 	public static void registerInstrumentation(InstrumentationSnippet instrumentation) {
 		InstrumentationController.addSnippet(instrumentation);

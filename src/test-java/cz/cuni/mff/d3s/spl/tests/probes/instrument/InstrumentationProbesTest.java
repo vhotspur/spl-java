@@ -142,7 +142,7 @@ public class InstrumentationProbesTest {
 			Runnable a = new Action(120 + i);
 			a.run();
 			
-			a = (Runnable) myLoader.loadClass("cz.cuni.mff.d3s.spl.tests.probes.instrument").newInstance();
+			a = (Runnable) myLoader.loadClass("cz.cuni.mff.d3s.spl.tests.probes.instrument.Action").newInstance();
 			a.run();
 		}
 		
