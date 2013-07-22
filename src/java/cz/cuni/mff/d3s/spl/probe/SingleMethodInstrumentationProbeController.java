@@ -45,6 +45,8 @@ public class SingleMethodInstrumentationProbeController implements ProbeControll
 
 	@Override
 	public void deactivate() {
+		SPL.unregisterInstrumentation(snippet);
+		SPL.reloadClass(transformer.getTargetClass());
 		SPL.unregisterProbe(probeId);
 	}
 

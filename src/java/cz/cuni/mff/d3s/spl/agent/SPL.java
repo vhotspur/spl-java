@@ -136,6 +136,10 @@ public final class SPL {
 		InstrumentationController.addSnippet(instrumentation);
 	}
 	
+	public static void unregisterInstrumentation(InstrumentationSnippet instrumentation) {
+		InstrumentationController.removeSnippet(instrumentation);
+	}
+	
 	public static void reloadClass(String name) {
 		InstrumentationController.reinstrument(name);
 	}
