@@ -26,12 +26,17 @@ import org.junit.Ignore;
 
 @Ignore
 public class MyClassLoader extends URLClassLoader {
+	private boolean actionAlreadyLoaded = false;
+	
 	public MyClassLoader(URL[] urls, ClassLoader parent) {
 		super(urls, parent);
 	}
 
 	@Override
 	public Class<?> loadClass(String name) throws ClassNotFoundException {
+		if (actionAlreadyLoaded) {
+			return super.loadClass(name);
+		}
 		if (!name.equals("cz.cuni.mff.d3s.spl.tests.probes.instrument.Action")) {
 			return super.loadClass(name);
 		}
@@ -44,6 +49,7 @@ public class MyClassLoader extends URLClassLoader {
 			e.printStackTrace();
 			return super.loadClass(name);
 		}
+		actionAlreadyLoaded = true;
 		return defineClass(name, data, 0, data.length);
 	}
 
