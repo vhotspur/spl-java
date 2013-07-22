@@ -44,6 +44,21 @@ public class SingleMethodTransformer implements Transformer {
 				targetClass.substring(targetClass.lastIndexOf('.') + 1), targetMethod);
 	}
 	
+	@Override
+	public int hashCode() {
+		return targetClass.hashCode() * 31 + targetMethod.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		System.err.printf(" SingleMethodTransformer[%s].equals[%s]\n", this, o);
+		if (!(o instanceof SingleMethodTransformer)) {
+			return false;
+		}
+		SingleMethodTransformer other = (SingleMethodTransformer) o;
+		return other.targetClass.equals(targetClass) && other.targetMethod.equals(targetMethod);
+	}
+	
 	public String getTargetClass() {
 		return targetClass;
 	}

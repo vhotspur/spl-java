@@ -40,6 +40,25 @@ public class JavassistSnippet implements InstrumentationSnippet {
 	}
 
 	@Override
+	public int hashCode() {
+		return classloaderFilter.hashCode() * 31 + transformer.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if ((obj == null) || (!(obj instanceof JavassistSnippet))) {
+			return false;
+		}
+		
+		JavassistSnippet other = (JavassistSnippet) obj;
+		return classloaderFilter.equals(other.classloaderFilter)
+				&& transformer.equals(other.transformer);
+	}
+
+	@Override
 	public byte[] instrument(ClassLoader loader, Class<?> theClass,
 			String classname, byte[] bytecode) {
 		if (!classloaderFilter.instrumentClassesFromThisClassLoader(loader)) {
