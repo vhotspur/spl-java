@@ -25,4 +25,8 @@ public class AcceptOnlyMyClassLoader implements ClassLoaderFilter {
 		return loader instanceof MyClassLoader;
 	}
 
+	@Override
+	public String toString() {
+		return "only MyClassLoader";
+	}
 }

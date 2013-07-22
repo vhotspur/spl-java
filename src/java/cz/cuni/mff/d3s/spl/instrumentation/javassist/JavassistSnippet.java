@@ -33,6 +33,11 @@ public class JavassistSnippet implements InstrumentationSnippet {
 		classloaderFilter = loaderFilter;
 		this.transformer = transformer;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("JavassistSnippet with `%s' (%s)", transformer, classloaderFilter);
+	}
 
 	@Override
 	public byte[] instrument(ClassLoader loader, Class<?> theClass,

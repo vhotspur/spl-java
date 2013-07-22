@@ -38,6 +38,12 @@ public class SingleMethodTransformer implements Transformer {
 		targetMethod = parts[1];
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("SingleMethodTransformer @ %s#%s",
+				targetClass.substring(targetClass.lastIndexOf('.') + 1), targetMethod);
+	}
+	
 	public String getTargetClass() {
 		return targetClass;
 	}

@@ -62,5 +62,10 @@ public class ConstLikeImplementations {
 			return true;
 		}
 		
+		@Override
+		public String toString() {
+			return "any class loader";
+		}
+		
 	}
 }
