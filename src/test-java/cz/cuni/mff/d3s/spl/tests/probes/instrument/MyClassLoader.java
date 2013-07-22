@@ -16,6 +16,9 @@
  */
 package cz.cuni.mff.d3s.spl.tests.probes.instrument;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -25,5 +28,40 @@ import org.junit.Ignore;
 public class MyClassLoader extends URLClassLoader {
 	public MyClassLoader(URL[] urls, ClassLoader parent) {
 		super(urls, parent);
+	}
+
+	@Override
+	public Class<?> loadClass(String name) throws ClassNotFoundException {
+		if (!name.equals("cz.cuni.mff.d3s.spl.tests.probes.instrument.Action")) {
+			return super.loadClass(name);
+		}
+		InputStream stream = this.getResourceAsStream(name.replace('.', '/')
+				+ ".class");
+		byte[] data;
+		try {
+			data = streamToBytes(stream);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return super.loadClass(name);
+		}
+		return defineClass(name, data, 0, data.length);
+	}
+
+	@Override
+	public String toString() {
+		return String.format("MyClassLoader[%s]", super.toString());
+	}
+
+	private static byte[] streamToBytes(InputStream input) throws IOException {
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		while (true) {
+			byte[] buffer = new byte[1024];
+			int bytesActuallyRead = input.read(buffer);
+			if (bytesActuallyRead == -1) {
+				break;
+			}
+			output.write(buffer, 0, bytesActuallyRead);
+		}
+		return output.toByteArray();
 	}
 }
