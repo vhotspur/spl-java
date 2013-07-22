@@ -150,8 +150,8 @@ public class InstrumentationProbesTest {
 			a.action(i);
 		}
 		
-		assertSampleCount(51, dataOdd);
-		assertSampleCount(50, dataEven);
+		assertSampleCount(50, dataOdd);
+		assertSampleCount(51, dataEven);
 	}
 	
 	@Test
