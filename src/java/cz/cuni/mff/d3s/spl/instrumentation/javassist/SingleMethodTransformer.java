@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgument;
+import cz.cuni.mff.d3s.spl.instrumentation.ExtraArguments;
 import cz.cuni.mff.d3s.spl.utils.StringUtils;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
@@ -31,10 +32,10 @@ public class SingleMethodTransformer implements Transformer {
 	private String targetClass;
 	private String targetMethod;
 	private String probeId;
-	private List<ExtraArgument> filterArgs;
-	private List<ExtraArgument> consumerArgs;
+	private ExtraArguments filterArgs;
+	private ExtraArguments consumerArgs;
 	
-	public SingleMethodTransformer(String fullMethodName, String probe, List<ExtraArgument> filterArguments, List<ExtraArgument> consumerArguments) {
+	public SingleMethodTransformer(String fullMethodName, String probe, ExtraArguments filterArguments, ExtraArguments consumerArguments) {
 		String[] parts = fullMethodName.split("#");
 		if (parts.length != 2) {
 			throw new IllegalArgumentException("Invalid method name.");
@@ -116,7 +117,7 @@ public class SingleMethodTransformer implements Transformer {
 		}
 	}
 	
-	protected static String extraArgumentsToCode(List<ExtraArgument> arguments, CtMethod method) {
+	protected static String extraArgumentsToCode(ExtraArguments arguments, CtMethod method) {
 		if ((arguments == null) || arguments.isEmpty()) {
 			return "new Object[0]";
 		}

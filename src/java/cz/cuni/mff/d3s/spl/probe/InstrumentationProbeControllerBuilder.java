@@ -16,9 +16,6 @@
  */
 package cz.cuni.mff.d3s.spl.probe;
 
-import java.util.Collections;
-import java.util.List;
-
 import cz.cuni.mff.d3s.spl.agent.SPL;
 import cz.cuni.mff.d3s.spl.core.Data;
 import cz.cuni.mff.d3s.spl.core.InvocationFilter;
@@ -28,15 +25,15 @@ import cz.cuni.mff.d3s.spl.core.impl.ForwardingMeasurementConsumer;
 import cz.cuni.mff.d3s.spl.core.impl.PlainBufferDataSource;
 import cz.cuni.mff.d3s.spl.instrumentation.ClassLoaderFilter;
 import cz.cuni.mff.d3s.spl.instrumentation.CommonExtraArgument;
-import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgument;
+import cz.cuni.mff.d3s.spl.instrumentation.ExtraArguments;
 import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgumentsBuilder;
 
 public class InstrumentationProbeControllerBuilder {
 	private ClassLoaderFilter loaderFilter = null;
 	private InvocationFilter invocationFilter = null;
-	private List<ExtraArgument> invocationFilterArgs = null;
+	private ExtraArguments invocationFilterArgs = null;
 	private MeasurementConsumer dataConsumer = null;
-	private List<ExtraArgument> dataConsumerArgs = null;
+	private ExtraArguments dataConsumerArgs = null;
 	private String methodName;
 	private boolean finalized = false;
 
@@ -62,11 +59,10 @@ public class InstrumentationProbeControllerBuilder {
 		dataConsumer = consumer;
 	}
 
-	public void setConsumer(MeasurementConsumer consumer, List<ExtraArgument> extraArguments) {
+	public void setConsumer(MeasurementConsumer consumer, ExtraArguments extraArguments) {
 		checkNotFinalized();
 		
 		dataConsumer = consumer;
-		// FIXME: make a copy
 		dataConsumerArgs = extraArguments;
 	}
 
@@ -93,7 +89,7 @@ public class InstrumentationProbeControllerBuilder {
 			setInvocationFilter(ConstLikeImplementations.ALWAYS_MEASURE_FILTER);
 		}
 		if (invocationFilterArgs == null) {
-			invocationFilterArgs = Collections.emptyList();
+			invocationFilterArgs = ExtraArguments.NO_ARGUMENTS;
 		}
 		if (dataConsumer == null) {
 			Data source = new PlainBufferDataSource();
@@ -101,7 +97,7 @@ public class InstrumentationProbeControllerBuilder {
 			forwardSamplesToDataSource(source);
 		}
 		if (dataConsumerArgs == null) {
-			dataConsumerArgs = Collections.emptyList();
+			dataConsumerArgs = ExtraArguments.NO_ARGUMENTS;
 		}
 	}
 	

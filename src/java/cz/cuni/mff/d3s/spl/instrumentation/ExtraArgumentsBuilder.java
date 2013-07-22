@@ -20,24 +20,37 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ExtraArgumentsBuilder {
-	private List<ExtraArgument> args = new LinkedList<>();
+	private List<ExtraArgument> argsList = new LinkedList<>();
+	private ExtraArguments args = null;
 
 	public void addField(String name) {
-		args.add(ExtraArgument.createField(name));
+		add(ExtraArgument.createField(name));
 	}
 	
 	public void addParameter(int position) {
-		args.add(ExtraArgument.createParameter(position));
+		add(ExtraArgument.createParameter(position));
 	}
 	
 	public void addThis() {
-		args.add(ExtraArgument.createThis());
+		add(ExtraArgument.createThis());
 	}
 
-	public List<ExtraArgument> get() {
+	public ExtraArguments get() {
+		if (args == null) {
+			args = new ExtraArguments(argsList);
+			/* Not needed anymore. */
+			argsList = null;
+		}
 		return args;
 	}
 
+	private void add(ExtraArgument argument) {
+		if (args != null) {
+			throw new IllegalStateException("ExtraArgumentsBuilder cannot be modified once get() was called.");
+		}
+		argsList.add(argument);
+	}
+	
 	public static ExtraArgumentsBuilder createFromCommonArguments(CommonExtraArgument... parameters) {
 		ExtraArgumentsBuilder builder = new ExtraArgumentsBuilder();
 		for (CommonExtraArgument arg : parameters) {

@@ -16,6 +16,65 @@
  */
 package cz.cuni.mff.d3s.spl.instrumentation;
 
-public class ExtraArguments {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
+public class ExtraArguments implements Iterable<ExtraArgument> {
+	public static final ExtraArguments NO_ARGUMENTS = new ExtraArguments();
+	
+	private List<ExtraArgument> arguments = new ArrayList<>();
+	
+	private ExtraArguments() {
+		arguments = Collections.emptyList();
+	}
+	
+	ExtraArguments(List<ExtraArgument> args) {
+		for (ExtraArgument a : args) {
+			arguments.add(a);
+		}
+	}
+	
+	public boolean isEmpty() {
+		return arguments.isEmpty();
+	}
+	
+	public int size() {
+		return arguments.size();
+	}
+	
+	public ExtraArgument get(int index) {
+		return arguments.get(index);
+	}
+
+	@Override
+	public Iterator<ExtraArgument> iterator() {
+		return new ArgumentIterator(arguments.iterator());
+	}
+	
+	private class ArgumentIterator implements Iterator<ExtraArgument> {
+		private Iterator<ExtraArgument> original;
+		
+		public ArgumentIterator(Iterator<ExtraArgument> original) {
+			this.original = original;
+		}
+		
+		@Override
+		public boolean hasNext() {
+			return original.hasNext();
+		}
+
+		@Override
+		public ExtraArgument next() {
+			return original.next();
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException("Arguments cannot be removed.");
+			
+		}
+		
+	}
 }

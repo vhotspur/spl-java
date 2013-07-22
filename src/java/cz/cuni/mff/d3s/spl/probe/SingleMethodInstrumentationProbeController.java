@@ -16,13 +16,11 @@
  */
 package cz.cuni.mff.d3s.spl.probe;
 
-import java.util.List;
-
 import cz.cuni.mff.d3s.spl.agent.SPL;
 import cz.cuni.mff.d3s.spl.core.InvocationFilter;
 import cz.cuni.mff.d3s.spl.core.MeasurementConsumer;
 import cz.cuni.mff.d3s.spl.instrumentation.ClassLoaderFilter;
-import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgument;
+import cz.cuni.mff.d3s.spl.instrumentation.ExtraArguments;
 import cz.cuni.mff.d3s.spl.instrumentation.javassist.JavassistSnippet;
 import cz.cuni.mff.d3s.spl.instrumentation.javassist.SingleMethodTransformer;
 
@@ -34,8 +32,8 @@ public class SingleMethodInstrumentationProbeController implements ProbeControll
 	
 	public SingleMethodInstrumentationProbeController(
 			ClassLoaderFilter loaderFilter,
-			InvocationFilter filter, List<ExtraArgument> filterArgs,
-			MeasurementConsumer consumer, List<ExtraArgument> consumerArguments,
+			InvocationFilter filter, ExtraArguments filterArgs,
+			MeasurementConsumer consumer, ExtraArguments consumerArguments,
 			String methodName) {
 		probe = new InstrumentationProbe(filter, consumer);
 		probeId = "probe:" + methodName;
