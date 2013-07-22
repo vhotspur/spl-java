@@ -51,7 +51,6 @@ public class SingleMethodTransformer implements Transformer {
 	
 	@Override
 	public boolean equals(Object o) {
-		System.err.printf(" SingleMethodTransformer[%s].equals[%s]\n", this, o);
 		if (!(o instanceof SingleMethodTransformer)) {
 			return false;
 		}
