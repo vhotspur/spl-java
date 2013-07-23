@@ -24,6 +24,7 @@ import cz.cuni.mff.d3s.spl.core.impl.PlainBufferDataSource;
 import cz.cuni.mff.d3s.spl.instrumentation.CommonExtraArgument;
 import cz.cuni.mff.d3s.spl.probe.InstrumentationProbeControllerBuilder;
 import cz.cuni.mff.d3s.spl.probe.ProbeController;
+import cz.cuni.mff.d3s.spl.utils.StringUtils;
 
 public class Monitor implements Runnable {
 	private static final int MILLIS_TO_NANOS = 1000 * 1000;
@@ -61,8 +62,8 @@ public class Monitor implements Runnable {
 		
 		StatisticSnapshot stats = data.getStatisticSnapshot();
 		
-		print("Mean execution time of last few invocations was %.0fms\n",
-				stats.getArithmeticMean() / MILLIS_TO_NANOS);
+		print("Mean execution time of last few invocations was %s.\n",
+				StringUtils.formatTimeUnits(stats.getArithmeticMean()));
 	}
 	
 	@Override
