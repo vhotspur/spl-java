@@ -53,7 +53,7 @@ public class InstrumentationProbeControllerBuilder {
 		setConsumer(new ForwardingMeasurementConsumer(source));
 	}
 
-	private void setConsumer(MeasurementConsumer consumer) {
+	public void setConsumer(MeasurementConsumer consumer) {
 		checkNotFinalized();
 		
 		dataConsumer = consumer;
