@@ -16,62 +16,31 @@
  */
 package cz.cuni.mff.d3s.spl.tests.probes.instrument;
 
-import java.net.URL;
+import static cz.cuni.mff.d3s.spl.tests.TestUtils.assertSampleCount;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import cz.cuni.mff.d3s.spl.core.Data;
-import cz.cuni.mff.d3s.spl.core.impl.PlainBufferDataSource;
 import cz.cuni.mff.d3s.spl.instrumentation.CommonExtraArgument;
 import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgumentsBuilder;
 import cz.cuni.mff.d3s.spl.probe.InstrumentationProbeControllerBuilder;
 import cz.cuni.mff.d3s.spl.probe.ProbeController;
 import cz.cuni.mff.d3s.spl.tests.TestUtils;
 import cz.cuni.mff.d3s.spl.tests.probes.AcceptOnlyOddSizes;
-import static cz.cuni.mff.d3s.spl.tests.TestUtils.assertSampleCount;
 
-public class InstrumentationProbesTest {
-	
-	private void activateAndWait(ProbeController ctl) {
-		ctl.activate();
-		
-		TestUtils.tryToSleep(21);
-	}
+public class SingleMethodInstrumentationTest extends InstrumentationTestBase {
 	
 	private InstrumentationProbeControllerBuilder probeBuilder;
-	private Data data;
-	private Data dataOdd;
-	private Data dataEven;
-	private MyClassLoader myLoader;
 	
 	@Before
 	public void setupBuilder() {
 		probeBuilder = new InstrumentationProbeControllerBuilder("cz.cuni.mff.d3s.spl.tests.probes.instrument.Action#action");
 	}
 	
-	@Before
-	public void setupData() {
-		data = new PlainBufferDataSource(500);
-		dataOdd = new PlainBufferDataSource(500);
-		dataEven = new PlainBufferDataSource(500);
-	}
-	
-	@Before
-	public void setupClassLoader() {
-		myLoader = new MyClassLoader(new URL[0], this.getClass().getClassLoader());
-	}
-	
 	@After
 	public void removeInstrumentation() {
-		probeBuilder.get().deactivate();
-		
-		try {
-			Thread.sleep(21);
-		} catch (InterruptedException e) {
-			/* Silently ignore. */
-		}
+		probesToDeactivate.add(probeBuilder.get());
 	}
 	
 	@Test
