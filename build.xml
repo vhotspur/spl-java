@@ -193,6 +193,24 @@
 		</java>
 	</target>
 	
+	<target name="run-demo-imagequality-with-monitor" depends="compile-demos,agent">
+		<echo message="Open ${java.demo.src.dir}/cz/cuni/mff/d3s/spl/demo/imagequality/html/index.html" />
+		<echo message="in your browser - the precision of the graph would change" />
+		<echo message="based on the overall load of your system." />
+		<echo message="The monitor announces when there is notable difference in" />
+		<echo message="the performance of the rendering method." />
+		<echo message="" />
+		<java classname="cz.cuni.mff.d3s.spl.demo.imagequality.Main"
+			fork="yes">
+			<classpath>
+				<pathelement path="${classes.build.dir}" />
+				<pathelement path="${lib.dir}/gral-core-0.9-SNAPSHOT.jar" />
+				<pathelement path="${demo.classes.build.dir}"/>
+			</classpath>
+			<jvmarg value="-javaagent:${jar.build.dir}/${agent.jar.file}=spl.class=cz.cuni.mff.d3s.spl.demo.imagequality.monitor.Monitor" />
+		</java>
+	</target>
+	
 	<target name="clean">
 		<delete dir="${build.dir}" />
 	</target>
