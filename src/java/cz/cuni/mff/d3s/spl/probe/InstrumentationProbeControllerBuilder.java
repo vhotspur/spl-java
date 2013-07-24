@@ -46,6 +46,7 @@ public class InstrumentationProbeControllerBuilder {
 			setDefaults();
 		}
 		
+		finalized = true;
 		return new SingleMethodInstrumentationProbeController(loaderFilter, invocationFilter, invocationFilterArgs, dataConsumer, dataConsumerArgs, methodName);
 	}
 
