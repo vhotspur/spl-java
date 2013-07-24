@@ -20,6 +20,22 @@ public class StringUtils {
 		return result.toString();
 	}
 	
+	public static String join(Object... objects) {
+		if (objects.length == 0) {
+			return "";
+		}
+		StringBuilder result = new StringBuilder();
+		boolean afterFirst = false;
+		for (Object o : objects) {
+			if (afterFirst) {
+				result.append(',');
+			}
+			result.append(o.toString());
+			afterFirst = true;
+		}
+		return result.toString();
+	}
+	
 	public static String formatTimeUnits(double nanos) {
 		if (nanos < 1000) {
 			return String.format("%.0fns", nanos);
