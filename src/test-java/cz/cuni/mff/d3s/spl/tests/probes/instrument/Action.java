@@ -45,6 +45,13 @@ public class Action implements Runnable {
 		
 		return list.get(0);
 	}
+	
+	public int action2(Object ignored, int i) {
+		Collections.shuffle(list);
+		Collections.sort(list);
+		
+		return list.get(0);
+	}
 
 	@Override
 	public void run() {
