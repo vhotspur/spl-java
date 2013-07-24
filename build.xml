@@ -53,6 +53,7 @@
 	<target name="compile">
 		<mkdir dir="${classes.build.dir}" />
 		<javac srcdir="${java.src.dir}" destdir="${classes.build.dir}"
+				debug="true"
 				includeantruntime="false">
 			<compilerarg value="-Xlint:all"/>
 			<classpath path="${lib.dir}/javassist.jar" />
@@ -85,6 +86,7 @@
 		<mkdir dir="${test.classes.build.dir}" />
 		<javac srcdir="${java.test.src.dir}"
 				destdir="${test.classes.build.dir}"
+				debug="true"
 				includeantruntime="false">
 			<classpath>
 				<pathelement path="${junit.jar.path}"/>
