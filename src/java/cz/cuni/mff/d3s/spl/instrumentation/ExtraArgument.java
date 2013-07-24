@@ -18,6 +18,7 @@ package cz.cuni.mff.d3s.spl.instrumentation;
 
 public class ExtraArgument {
 	public enum Kind {
+		NULL,
 		THIS,
 		FIELD,
 		PARAMETER,
@@ -27,6 +28,7 @@ public class ExtraArgument {
 	public final int index;
 	
 	private static final ExtraArgument THIS = new ExtraArgument(Kind.THIS, null, -1);
+	public static final ExtraArgument NULL = new ExtraArgument(Kind.NULL, null, -1);
 	
 	private ExtraArgument(Kind kind, String name, int index) {
 		this.kind = kind;

@@ -133,6 +133,9 @@ public class SingleMethodTransformer implements Transformer {
 			case PARAMETER:
 				parts.add(parameterAsObject(arg.index, method));
 				break;
+			case NULL:
+				parts.add("null");
+				break;
 			}
 		}
 		return String.format("new Object[]{%s}", StringUtils.join(parts));
