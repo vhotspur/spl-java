@@ -16,7 +16,8 @@
  */
 package cz.cuni.mff.d3s.spl.instrumentation.javassist;
 
-import javassist.ByteArrayClassPath;
+import java.io.ByteArrayInputStream;
+
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.LoaderClassPath;
@@ -27,12 +28,26 @@ public class Utils {
 	
 	public static CtClass getClassFromBytecode(ClassLoader loader,
 			String classname, byte[] bytecode) throws NotFoundException {
-		ClassPool pool = ClassPool.getDefault();
-		pool.insertClassPath(new ByteArrayClassPath(classname, bytecode));
+		ClassPool pool = new ClassPool();
 		pool.insertClassPath(new LoaderClassPath(loader));
-		CtClass cc = pool.get(classname);
-		cc.defrost();
-		return cc;
+		
+		ByteArrayInputStream bytecodeAsStream = new ByteArrayInputStream(bytecode);
+		
+		try {
+			/*
+			 * We need to define the class explicitly.
+			 * Adding ByteArrayClassPath to the pool classpath causes that
+			 * following calls would work with the original class definition
+			 * (that happens despite working with root class pool and
+			 * with any combination of defrost/detach).
+			 */
+			CtClass cc = pool.makeClass(bytecodeAsStream);
+			cc.defrost();
+			return cc;
+		} catch (Exception e) {
+			/* This would hardly happen, but anyway. */
+			throw new NotFoundException("Making class from byte[] bytecode failed.", e);
+		}
 	}
 	
 }
