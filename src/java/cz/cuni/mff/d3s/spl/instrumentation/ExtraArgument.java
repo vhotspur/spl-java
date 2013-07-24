@@ -47,4 +47,60 @@ public class ExtraArgument {
 	public static ExtraArgument createParameter(int position) {
 		return new ExtraArgument(Kind.PARAMETER, null, position);
 	}
+	
+	public static ExtraArgument createFromCommon(CommonExtraArgument arg) {
+		switch (arg) {
+		case METHOD_PARAM_1:
+			return createParameter(1);
+		case METHOD_PARAM_2:
+			return createParameter(2);
+		case METHOD_PARAM_3:
+			return createParameter(3);
+		case METHOD_PARAM_4:
+			return createParameter(4);
+		case THIS:
+			return createThis();
+		default:
+			assert false : "Unreachable case.";
+			return null;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + index;
+		result = prime * result + ((kind == null) ? 0 : kind.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof ExtraArgument)) {
+			return false;
+		}
+		ExtraArgument other = (ExtraArgument) obj;
+		if (index != other.index) {
+			return false;
+		}
+		if (kind != other.kind) {
+			return false;
+		}
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		return true;
+	}
 }

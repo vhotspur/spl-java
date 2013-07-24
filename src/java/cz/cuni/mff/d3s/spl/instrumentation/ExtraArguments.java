@@ -77,4 +77,21 @@ public class ExtraArguments implements Iterable<ExtraArgument> {
 		}
 		
 	}
+
+	@Override
+	public int hashCode() {
+		return arguments.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof ExtraArguments)) {
+			return false;
+		}
+		ExtraArguments other = (ExtraArguments) obj;
+		return other.arguments.equals(arguments);
+	}
 }
