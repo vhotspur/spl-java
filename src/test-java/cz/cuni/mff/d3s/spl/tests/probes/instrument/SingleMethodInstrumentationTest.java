@@ -22,7 +22,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import cz.cuni.mff.d3s.spl.instrumentation.CommonExtraArgument;
+import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgument;
 import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgumentsBuilder;
 import cz.cuni.mff.d3s.spl.probe.InstrumentationProbeControllerBuilder;
 import cz.cuni.mff.d3s.spl.probe.ProbeController;
@@ -89,7 +89,7 @@ public class SingleMethodInstrumentationTest extends InstrumentationTestBase {
 	public void invokeOnlyForOddIterations() {
 		probeBuilder.forwardSamplesToDataSource(data);
 		
-		probeBuilder.setInvocationFilter(new AcceptOnlyOddSizes(), CommonExtraArgument.METHOD_PARAM_1);
+		probeBuilder.setInvocationFilter(new AcceptOnlyOddSizes(), ExtraArgument.createParameter(1));
 		
 		ProbeController probeCtl = probeBuilder.get();
 		

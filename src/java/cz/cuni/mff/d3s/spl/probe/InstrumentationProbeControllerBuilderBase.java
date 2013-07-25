@@ -20,7 +20,7 @@ import cz.cuni.mff.d3s.spl.core.InvocationFilter;
 import cz.cuni.mff.d3s.spl.core.MeasurementConsumer;
 import cz.cuni.mff.d3s.spl.core.impl.ConstLikeImplementations;
 import cz.cuni.mff.d3s.spl.instrumentation.ClassLoaderFilter;
-import cz.cuni.mff.d3s.spl.instrumentation.CommonExtraArgument;
+import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgument;
 import cz.cuni.mff.d3s.spl.instrumentation.ExtraArguments;
 import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgumentsBuilder;
 
@@ -40,12 +40,12 @@ abstract class InstrumentationProbeControllerBuilderBase extends ProbeController
 		dataConsumerArgs = extraArguments;
 	}
 
-	final public void setInvocationFilter(InvocationFilter filter, CommonExtraArgument... parameters) {
+	final public void setInvocationFilter(InvocationFilter filter, ExtraArgument... arguments) {
 		checkNotFinalized();
 		
 		invocationFilter = filter;
 		
-		ExtraArgumentsBuilder builder = ExtraArgumentsBuilder.createFromCommonArguments(parameters);
+		ExtraArgumentsBuilder builder = ExtraArgumentsBuilder.create(arguments);
 		invocationFilterArgs = builder.get();
 	}
 

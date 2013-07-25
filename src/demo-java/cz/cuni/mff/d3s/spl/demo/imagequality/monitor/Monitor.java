@@ -21,7 +21,7 @@ import cz.cuni.mff.d3s.spl.annotations.AtStart;
 import cz.cuni.mff.d3s.spl.core.Data;
 import cz.cuni.mff.d3s.spl.core.StatisticSnapshot;
 import cz.cuni.mff.d3s.spl.core.impl.PlainBufferDataSource;
-import cz.cuni.mff.d3s.spl.instrumentation.CommonExtraArgument;
+import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgument;
 import cz.cuni.mff.d3s.spl.probe.InstrumentationProbeControllerBuilder;
 import cz.cuni.mff.d3s.spl.probe.ProbeController;
 import cz.cuni.mff.d3s.spl.utils.StringUtils;
@@ -44,7 +44,7 @@ public class Monitor implements Runnable {
 		data = new PlainBufferDataSource(100);
 		
 		InstrumentationProbeControllerBuilder builder = new InstrumentationProbeControllerBuilder(METHOD);
-		builder.setInvocationFilter(new FilterByMethod(), CommonExtraArgument.METHOD_PARAM_1);
+		builder.setInvocationFilter(new FilterByMethod(), ExtraArgument.createParameter(1));
 		builder.forwardSamplesToDataSource(data);
 		
 		ctl = builder.get();

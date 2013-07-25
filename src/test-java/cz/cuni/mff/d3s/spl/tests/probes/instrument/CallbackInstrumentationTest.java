@@ -22,7 +22,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import cz.cuni.mff.d3s.spl.instrumentation.CommonExtraArgument;
 import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgument;
 import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgumentsBuilder;
 import cz.cuni.mff.d3s.spl.probe.MultimethodInstrumentationProbeControllerBuilder;
@@ -96,7 +95,7 @@ public class CallbackInstrumentationTest extends InstrumentationTestBase {
 	public void invokeOnlyForOddIterations() {
 		probeBuilder.forwardSamplesToDataSource(data);
 		
-		probeBuilder.setInvocationFilter(new AcceptOnlyOddSizes(), CommonExtraArgument.METHOD_PARAM_1);
+		probeBuilder.setInvocationFilter(new AcceptOnlyOddSizes(), ExtraArgument.createParameter(1));
 		
 		ProbeController probeCtl = probeBuilder.get();
 	
@@ -135,7 +134,7 @@ public class CallbackInstrumentationTest extends InstrumentationTestBase {
 	@Test
 	public void requestPairing() {
 		probeBuilder.forwardSamplesToDataSource(data);
-		probeBuilder.setStartMethodMatcher(CommonExtraArgument.METHOD_PARAM_1);
+		probeBuilder.setStartMethodMatcher(ExtraArgument.createParameter(1));
 		probeBuilder.setEndMethodMatcher(ExtraArgument.createParameter(2));
 		
 		ProbeController probeCtl = probeBuilder.get();

@@ -47,24 +47,6 @@ public class ExtraArgument {
 	public static ExtraArgument createParameter(int position) {
 		return new ExtraArgument(Kind.PARAMETER, null, position);
 	}
-	
-	public static ExtraArgument createFromCommon(CommonExtraArgument arg) {
-		switch (arg) {
-		case METHOD_PARAM_1:
-			return createParameter(1);
-		case METHOD_PARAM_2:
-			return createParameter(2);
-		case METHOD_PARAM_3:
-			return createParameter(3);
-		case METHOD_PARAM_4:
-			return createParameter(4);
-		case THIS:
-			return createThis();
-		default:
-			assert false : "Unreachable case.";
-			return null;
-		}
-	}
 
 	@Override
 	public int hashCode() {

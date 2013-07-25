@@ -18,7 +18,6 @@ package cz.cuni.mff.d3s.spl.probe;
 
 import cz.cuni.mff.d3s.spl.core.impl.ConstLikeImplementations;
 import cz.cuni.mff.d3s.spl.instrumentation.ClassLoaderFilter;
-import cz.cuni.mff.d3s.spl.instrumentation.CommonExtraArgument;
 import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgument;
 
 public class MultimethodInstrumentationProbeControllerBuilder extends InstrumentationProbeControllerBuilderBase {
@@ -49,16 +48,16 @@ public class MultimethodInstrumentationProbeControllerBuilder extends Instrument
 		endMethodLoaderFilter = filter;
 	}
 	
-	public void setStartMethodMatcher(CommonExtraArgument parameter) {
+	public void setStartMethodMatcher(ExtraArgument argument) {
 		checkNotFinalized();
 		
-		startMethodMatcher = ExtraArgument.createFromCommon(parameter);
+		startMethodMatcher = argument;
 	}
 	
-	public void setEndMethodMatcher(ExtraArgument parameter) {
+	public void setEndMethodMatcher(ExtraArgument argument) {
 		checkNotFinalized();
 		
-		endMethodMatcher = parameter;
+		endMethodMatcher = argument;
 	}
 
 	@Override
