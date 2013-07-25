@@ -20,8 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import cz.cuni.mff.d3s.spl.utils.StringUtils;
-
 
 public class NonLocalStopwatch {
 	private static Map<Probe, Map<Object, MyStopwatch>> inProgress = new HashMap<>();
@@ -29,9 +27,7 @@ public class NonLocalStopwatch {
 	private static Map<Probe, MyStopwatch> inProgressNullIds = new ConcurrentHashMap<>();
 	
 	public static void start(Probe probe, Object id, Object... args) {
-		System.err.printf("NonLocalStopwatch.start(%s, %s, [%s])\n", probe, id, StringUtils.join(args));
 		if (!probe.isActive(args)) {
-			System.err.printf(" --> not active!\n");
 			return;
 		}
 		
@@ -47,7 +43,6 @@ public class NonLocalStopwatch {
 	}
 	
 	public static void stop(Probe probe, Object id, Object... args) {
-		System.err.printf("NonLocalStopwatch.stop(%s, %s, [%s])\n", probe, id, StringUtils.join(args));
 		MyStopwatch stopwatch;
 		if (id != null) {
 			stopwatch = getProbeStopwatches(probe).remove(id);

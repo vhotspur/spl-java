@@ -99,8 +99,7 @@ public class CallbackInstrumentationTest extends InstrumentationTestBase {
 		probeBuilder.setInvocationFilter(new AcceptOnlyOddSizes(), CommonExtraArgument.METHOD_PARAM_1);
 		
 		ProbeController probeCtl = probeBuilder.get();
-		
-		System.err.printf("Activating %s\n", probeCtl);
+	
 		activateAndWait(probeCtl);
 		
 		for (int i = 0; i < LOOPS; i++) {
