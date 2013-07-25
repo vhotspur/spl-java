@@ -16,17 +16,13 @@
  */
 package cz.cuni.mff.d3s.spl.instrumentation.javassist;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgument;
-import cz.cuni.mff.d3s.spl.instrumentation.ExtraArguments;
-import cz.cuni.mff.d3s.spl.utils.StringUtils;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.NotFoundException;
+import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgument;
+import cz.cuni.mff.d3s.spl.instrumentation.ExtraArguments;
 
 public class StartMethodTransformer implements Transformer {
 	private String targetClass;
@@ -100,8 +96,8 @@ public class StartMethodTransformer implements Transformer {
 					probeId);
 			String startStopwatch = String.format("cz.cuni.mff.d3s.spl.probe.NonLocalStopwatch.start(%s_probe, %s, %s);",
 					Utils.INSTRUMENTATION_IDENTIFIERS_PREFIX,
-					extraArgumentToCode(matcher, method),
-					extraArgumentsToCode(filterArgs, method));
+					Utils.extraArgumentToCode(matcher, method),
+					Utils.extraArgumentsToCode(filterArgs, method));
 			
 			method.insertBefore(initProbe + startStopwatch);
 		} catch (CannotCompileException e) {
@@ -111,53 +107,6 @@ public class StartMethodTransformer implements Transformer {
 		}
 	}
 	
-	protected static String extraArgumentsToCode(ExtraArguments arguments, CtMethod method) {
-		if ((arguments == null) || arguments.isEmpty()) {
-			return "new Object[0]";
-		}
-		List<String> parts = new ArrayList<>(arguments.size());
-		for (ExtraArgument arg : arguments) {
-			parts.add(extraArgumentToCode(arg, method));
-		}
-		return String.format("new Object[]{%s}", StringUtils.join(parts));
-	}
-	
-	protected static String extraArgumentToCode(ExtraArgument argument, CtMethod method) {
-		switch (argument.kind) {
-		case THIS:
-			return "$0";
-		case FIELD:
-			return "$0." + argument.name;
-		case PARAMETER:
-			return parameterAsObject(argument.index, method);
-		case NULL:
-			return "null";
-		}
-		return null;
-	}
-	
-	protected static String parameterAsObject(int index, CtMethod method) {
-		CtClass type;
-		try {
-			type = method.getParameterTypes()[index - 1];
-		} catch (NotFoundException e) {
-			e.printStackTrace();
-			return "$0";
-		}
-		String ref = "$" + index;
-		if (!type.isPrimitive()) {
-			return ref;
-		}
-		
-		if (type == CtClass.intType) {
-			return "new Integer(" + ref + ")";
-		} else {
-			// TODO
-		}
-		
-		return ref;
-	}
-
 	private static String addLocalVariableAndPrepareInitialization(
 			CtMethod method, String variableName, String variableClass,
 			String initializationFormat, Object... args)

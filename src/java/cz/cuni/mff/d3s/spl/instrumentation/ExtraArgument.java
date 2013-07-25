@@ -17,15 +17,15 @@
 package cz.cuni.mff.d3s.spl.instrumentation;
 
 public class ExtraArgument {
-	public enum Kind {
+	private enum Kind {
 		NULL,
 		THIS,
 		FIELD,
 		PARAMETER,
 	};
-	public final Kind kind;
-	public final String name;
-	public final int index;
+	private final Kind kind;
+	private final String name;
+	private final int index;
 	
 	private static final ExtraArgument THIS = new ExtraArgument(Kind.THIS, null, -1);
 	public static final ExtraArgument NULL = new ExtraArgument(Kind.NULL, null, -1);
@@ -34,6 +34,23 @@ public class ExtraArgument {
 		this.kind = kind;
 		this.name = name;
 		this.index = index;
+	}
+	
+	public void accept(ExtraArgumentVisitor visitor) {
+		switch (kind) {
+		case NULL:
+			visitor.visitNull();
+			return;
+		case THIS:
+			visitor.visitThis();
+			return;
+		case FIELD:
+			visitor.visitField(name);
+			return;
+		case PARAMETER:
+			visitor.visitParameter(index);
+			return;
+		}
 	}
 	
 	public static ExtraArgument createThis() {

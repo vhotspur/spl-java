@@ -44,8 +44,10 @@ public class ExtraArguments implements Iterable<ExtraArgument> {
 		return arguments.size();
 	}
 	
-	public ExtraArgument get(int index) {
-		return arguments.get(index);
+	public void visit(ExtraArgumentVisitor visitor) {
+		for (ExtraArgument arg : arguments) {
+			arg.accept(visitor);
+		}
 	}
 
 	@Override

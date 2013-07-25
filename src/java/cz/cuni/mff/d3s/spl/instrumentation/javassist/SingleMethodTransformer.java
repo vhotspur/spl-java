@@ -16,17 +16,12 @@
  */
 package cz.cuni.mff.d3s.spl.instrumentation.javassist;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgument;
-import cz.cuni.mff.d3s.spl.instrumentation.ExtraArguments;
-import cz.cuni.mff.d3s.spl.utils.StringUtils;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.NotFoundException;
+import cz.cuni.mff.d3s.spl.instrumentation.ExtraArguments;
 
 public class SingleMethodTransformer implements Transformer {
 	private String targetClass;
@@ -98,7 +93,7 @@ public class SingleMethodTransformer implements Transformer {
 					method, "_stopwatch",
 					"cz.cuni.mff.d3s.spl.measure.DurationStopwatch",
 					"%1$s_stopwatch = cz.cuni.mff.d3s.spl.probe.ProbeStopwatch.start(%1$s_probe, %4$s);",
-					extraArgumentsToCode(filterArgs, method));
+					Utils.extraArgumentsToCode(filterArgs, method));
 
 			String codeBefore = String.format("{%s %s}", initProbe, initStopwatch);
 
@@ -106,7 +101,7 @@ public class SingleMethodTransformer implements Transformer {
 			
 			String codeAfter = String.format("{ %s_stopwatch.done(%s); }",
 					Utils.INSTRUMENTATION_IDENTIFIERS_PREFIX,
-					extraArgumentsToCode(consumerArgs, method));
+					Utils.extraArgumentsToCode(consumerArgs, method));
 			
 			method.insertBefore(codeBefore);
 			method.insertAfter(codeAfter, false);
@@ -117,52 +112,6 @@ public class SingleMethodTransformer implements Transformer {
 		}
 	}
 	
-	protected static String extraArgumentsToCode(ExtraArguments arguments, CtMethod method) {
-		if ((arguments == null) || arguments.isEmpty()) {
-			return "new Object[0]";
-		}
-		List<String> parts = new ArrayList<>(arguments.size());
-		for (ExtraArgument arg : arguments) {
-			switch (arg.kind) {
-			case THIS:
-				parts.add("$0");
-				break;
-			case FIELD:
-				parts.add("$0." + arg.name);
-				break;
-			case PARAMETER:
-				parts.add(parameterAsObject(arg.index, method));
-				break;
-			case NULL:
-				parts.add("null");
-				break;
-			}
-		}
-		return String.format("new Object[]{%s}", StringUtils.join(parts));
-	}
-	
-	protected static String parameterAsObject(int index, CtMethod method) {
-		CtClass type;
-		try {
-			type = method.getParameterTypes()[index - 1];
-		} catch (NotFoundException e) {
-			e.printStackTrace();
-			return "$0";
-		}
-		String ref = "$" + index;
-		if (!type.isPrimitive()) {
-			return ref;
-		}
-		
-		if (type == CtClass.intType) {
-			return "new Integer(" + ref + ")";
-		} else {
-			// TODO
-		}
-		
-		return ref;
-	}
-
 	private static String addLocalVariableAndPrepareInitialization(
 			CtMethod method, String variableName, String variableClass,
 			String initializationFormat, Object... args)
