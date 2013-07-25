@@ -58,6 +58,8 @@ public class NonLocalStopwatch {
 	}
 	
 	private static Map<Object, MyStopwatch> getProbeStopwatches(Probe probe) {
+		// This might be faster:
+		// http://stackoverflow.com/a/3752264/1360886
 		synchronized (inProgress) {
 			Map<Object, MyStopwatch> stopwatches = inProgress.get(probe);
 			if (stopwatches == null) {
