@@ -135,7 +135,7 @@ public class CallbackInstrumentationTest extends InstrumentationTestBase {
 	public void requestPairing() {
 		probeBuilder.forwardSamplesToDataSource(data);
 		probeBuilder.setStartMethodMatcher(ExtraArgument.createParameter(1));
-		probeBuilder.setEndMethodMatcher(ExtraArgument.createParameter(2));
+		probeBuilder.setEndMethodMatcher(ExtraArgument.PASS_THROUGH_PARAMETER_2);
 		
 		ProbeController probeCtl = probeBuilder.get();
 		

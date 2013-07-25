@@ -32,7 +32,7 @@ public class ExtraArgumentsBuilder {
 	}
 	
 	public void addThis() {
-		add(ExtraArgument.createThis());
+		add(ExtraArgument.PASS_THIS);
 	}
 
 	public ExtraArguments get() {

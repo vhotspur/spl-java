@@ -89,7 +89,7 @@ public class SingleMethodInstrumentationTest extends InstrumentationTestBase {
 	public void invokeOnlyForOddIterations() {
 		probeBuilder.forwardSamplesToDataSource(data);
 		
-		probeBuilder.setInvocationFilter(new AcceptOnlyOddSizes(), ExtraArgument.createParameter(1));
+		probeBuilder.setInvocationFilter(new AcceptOnlyOddSizes(), ExtraArgument.PASS_THROUGH_PARAMETER_1);
 		
 		ProbeController probeCtl = probeBuilder.get();
 		

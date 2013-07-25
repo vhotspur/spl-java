@@ -68,10 +68,10 @@ public class MultimethodInstrumentationProbeControllerBuilder extends Instrument
 			setClassLoaderFilter(ConstLikeImplementations.ANY_CLASS_LOADER);
 		}
 		if (startMethodMatcher == null) {
-			startMethodMatcher = ExtraArgument.NULL;
+			startMethodMatcher = ExtraArgument.PASS_NULL;
 		}
 		if (endMethodMatcher == null) {
-			endMethodMatcher = ExtraArgument.NULL;
+			endMethodMatcher = ExtraArgument.PASS_NULL;
 		}
 	}
 }

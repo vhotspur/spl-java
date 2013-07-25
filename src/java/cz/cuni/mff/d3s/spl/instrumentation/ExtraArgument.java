@@ -27,8 +27,12 @@ public class ExtraArgument {
 	private final String name;
 	private final int index;
 	
-	private static final ExtraArgument THIS = new ExtraArgument(Kind.THIS, null, -1);
-	public static final ExtraArgument NULL = new ExtraArgument(Kind.NULL, null, -1);
+	public static final ExtraArgument PASS_THIS = new ExtraArgument(Kind.THIS, null, -1);
+	public static final ExtraArgument PASS_NULL = new ExtraArgument(Kind.NULL, null, -1);
+	public static final ExtraArgument PASS_THROUGH_PARAMETER_1 = new ExtraArgument(Kind.PARAMETER, null, 1);
+	public static final ExtraArgument PASS_THROUGH_PARAMETER_2 = new ExtraArgument(Kind.PARAMETER, null, 2);
+	public static final ExtraArgument PASS_THROUGH_PARAMETER_3 = new ExtraArgument(Kind.PARAMETER, null, 3);
+	public static final ExtraArgument PASS_THROUGH_PARAMETER_4 = new ExtraArgument(Kind.PARAMETER, null, 4);
 	
 	private ExtraArgument(Kind kind, String name, int index) {
 		this.kind = kind;
@@ -51,10 +55,6 @@ public class ExtraArgument {
 			visitor.visitParameter(index);
 			return;
 		}
-	}
-	
-	public static ExtraArgument createThis() {
-		return THIS;
 	}
 	
 	public static ExtraArgument createField(String name) {
