@@ -87,10 +87,10 @@ public class SimpleFormulas {
 		}
 
 		@Override
-		public void bind(String variable, Data data)
+		public void bind(String variable, Data source)
 				throws NoSuchElementException {
 			if (sourceName.equals(variable)) {
-				this.data = data;
+				data = source;
 			} else {
 				throw new NoSuchElementException("No such variable in the formula.");
 			}

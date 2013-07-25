@@ -17,9 +17,9 @@ public class Comparison implements Formula {
 		public NamedDataSource(String name) {
 			this.name = name;
 		}
-		public void bind(String name, Data data) {
-			if (this.name.equals(name)) {
-				this.data = data;
+		public void bind(String sourceName, Data source) {
+			if (name.equals(sourceName)) {
+				data = source;
 			}
 		}
 		public boolean valid() {

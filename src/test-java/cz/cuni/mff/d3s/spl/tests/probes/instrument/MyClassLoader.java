@@ -48,6 +48,11 @@ public class MyClassLoader extends URLClassLoader {
 		} catch (IOException e) {
 			e.printStackTrace();
 			return super.loadClass(name);
+		} finally {
+			try {
+				stream.close();
+			} catch (IOException e) {
+			}
 		}
 		actionAlreadyLoaded = true;
 		return defineClass(name, data, 0, data.length);
