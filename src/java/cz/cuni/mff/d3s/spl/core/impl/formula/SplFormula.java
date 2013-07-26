@@ -16,6 +16,10 @@
  */
 package cz.cuni.mff.d3s.spl.core.impl.formula;
 
-public class FormulaFromString {
+import cz.cuni.mff.d3s.spl.core.Formula;
 
+public class SplFormula {
+	public static Formula create(String formula) {
+		return FormulaParser.parse(formula);
+	}
 }

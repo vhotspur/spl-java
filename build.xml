@@ -24,9 +24,12 @@
 	
 	<property name="lib.dir" value="lib" />
 	<property name="junit.jar.path" value="lib/junit-4.11.jar" />
+	<property name="javacc.home" value="/usr/share/java/javacc-5.0/" />
 	
 	<property name="build.dir" value="out" />
 	<property name="classes.build.dir" value="${build.dir}/classes" />
+	<property name="parser.build.dir" value="${build.dir}/parser-src" />
+	<property name="parser.package.path" value="cz/cuni/mff/d3s/spl/core/impl/formula" />
 	<property name="test.classes.build.dir" value="${build.dir}/test-classes" />
 	<property name="test.results.dir" value="${build.dir}/test-results" />
 	<property name="demo.classes.build.dir" value="${build.dir}/demo-classes" />
@@ -50,13 +53,23 @@
 	<target name="main" depends="compile">
 	</target>
 	
-	<target name="compile">
+	<target name="compile" depends="compile-parser">
 		<mkdir dir="${classes.build.dir}" />
-		<javac srcdir="${java.src.dir}" destdir="${classes.build.dir}"
+		<javac destdir="${classes.build.dir}"
 				includeantruntime="false">
+			<src path="${java.src.dir}" />
+			<src path="${parser.build.dir}" />
 			<compilerarg value="-Xlint:all"/>
 			<classpath path="${lib.dir}/javassist.jar" />
 		</javac>
+	</target>
+	
+	<target name="compile-parser">
+		<mkdir dir="${parser.build.dir}/${parser.package.path}" />
+		<javacc target="${java.src.dir}/${parser.package.path}/FormulaParser.jj"
+			outputdirectory="${parser.build.dir}/${parser.package.path}/"
+			javacchome="${javacc.home}"
+		/>
 	</target>
 	
 	<target name="agent" depends="compile">
