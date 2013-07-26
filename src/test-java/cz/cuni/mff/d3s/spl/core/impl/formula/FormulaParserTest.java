@@ -16,9 +16,18 @@
  */
 package cz.cuni.mff.d3s.spl.core.impl.formula;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 import cz.cuni.mff.d3s.spl.core.Data;
 import cz.cuni.mff.d3s.spl.core.Formula;
@@ -26,35 +35,71 @@ import cz.cuni.mff.d3s.spl.core.MathematicalInterpretation;
 import cz.cuni.mff.d3s.spl.core.Result;
 import cz.cuni.mff.d3s.spl.core.impl.DataForTest;
 import cz.cuni.mff.d3s.spl.core.impl.InterpretationForTests;
-import cz.cuni.mff.d3s.spl.core.impl.formula.Comparison;
-import cz.cuni.mff.d3s.spl.core.impl.formula.Comparison.Operator;
 
+@RunWith(Parameterized.class)
 public class FormulaParserTest {
 	protected static final int SAMPLE_COUNT_GOOD = InterpretationForTests.MINIMUM_SAMPLES_REQUIRED * 2;
 	protected static final int SAMPLE_COUNT_BAD = InterpretationForTests.MINIMUM_SAMPLES_REQUIRED / 2;
+	
+	/* We use these constants only for nicer formatting. */
+	protected static final Result TRU = Result.TRUE;
+	protected static final Result FAL = Result.FALSE;
+	protected static final Result UNK = Result.CANNOT_COMPUTE;
 
-	/* We assume that formula uses variables d1, d2, d3 ... */
-	protected void bindAndAssert(Result expectedResult, Formula formula, Data... datas) {
-		assertNotNull(formula);
-		
-		/* First, set the proper interpretation. */
-		formula.setInterpreation(interpretation);
-		
-		/* Bind the provided data sources. */
-		for (int i = 0; i < datas.length; i++) {
-			String varname = String.format("d%d", i + 1);
-			formula.bind(varname, datas[i]);
-		}
-		
-		/* And evaluate. */
-		assertEquals(expectedResult, formula.evaluate());
+	@Parameters(name = "{index}: {0} {1}")
+	public static Collection<Object[]> createParameters() {
+		return Arrays.asList(new Object[][] {
+			{ TRU, "low < high" },
+			{ FAL, "high < low" },
+			{ UNK, "empty < high" },
+			
+			{ TRU, "high > low" },
+			{ FAL, "low > high" },
+			{ UNK, "high > empty" },
+			
+			{ TRU, "low < medium && medium < high" },
+			{ TRU, "low < medium && medium < high" },
+			
+			/*
+			 * Test Kleene logic.
+			 * (The combinations are tried in FALSE, UKNOWN, TRUE.)
+			 */
+			/* AND */
+			{ FAL, "  low > medium && medium > high" },
+			{ FAL, "  low > medium &&  empty > high" },
+			{ FAL, "  low > medium && medium < high" },
+			{ FAL, "empty > medium && medium > high" },
+			{ UNK, "empty > medium &&  empty > high" },
+			{ UNK, "empty > medium && medium < high" },
+			{ FAL, "  low < medium && medium > high" },
+			{ UNK, "  low < medium &&  empty > high" },
+			{ TRU, "  low < medium && medium < high" },
+			/* OR */
+			{ FAL, "  low > medium || medium > high" },
+			{ UNK, "  low > medium ||  empty > high" },
+			{ TRU, "  low > medium || medium < high" },
+			{ UNK, "empty > medium || medium > high" },
+			{ UNK, "empty > medium ||  empty > high" },
+			{ TRU, "empty > medium || medium < high" },
+			{ TRU, "  low < medium || medium > high" },
+			{ TRU, "  low < medium ||  empty > high" },
+			{ TRU, "  low < medium || medium < high" },
+		});
 	}
+	
+	private final String formulaAsString;
+	private final Result expectedResult;
 	
 	protected MathematicalInterpretation interpretation;
 	protected Data low;
 	protected Data medium;
 	protected Data high;
 	protected Data empty;
+	
+	public FormulaParserTest(final Result result, final String formula) {
+		formulaAsString = formula;
+		expectedResult = result;
+	}
 	
 	@Before
 	public void setupInterpretation() {
@@ -70,9 +115,31 @@ public class FormulaParserTest {
 	}
 	
 	@Test
-	public void simpleFormula() {
-		Formula formula = SplFormula.create("d1 < d2");
-		bindAndAssert(Result.TRUE, formula, low, high);
-	}
+	public void parse() {
+		Formula formula = SplFormula.create(formulaAsString);
+		
+		assertNotNull(formula);
+		
+		/* First, set the proper interpretation. */
+		formula.setInterpreation(new InterpretationForTests());
 
+		/* Bind the provided data sources. */
+		bindIfPresent(formula, formulaAsString);
+		
+		/* And evaluate. */
+		assertEquals(expectedResult, formula.evaluate());
+	}
+	
+	private void bindIfPresent(Formula parsed, String formula) {
+		bindIfPresent(parsed, formula, low, "low");
+		bindIfPresent(parsed, formula, medium, "medium");
+		bindIfPresent(parsed, formula, high, "high");
+		bindIfPresent(parsed, formula, empty, "empty");
+	}
+	
+	private void bindIfPresent(Formula parsed, String formula, Data source, String variable) {
+		if (formula.contains(variable)) {
+			parsed.bind(variable, source);
+		}
+	}
 }
