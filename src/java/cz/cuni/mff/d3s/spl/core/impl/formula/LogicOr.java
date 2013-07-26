@@ -37,7 +37,7 @@ public class LogicOr extends LogicOp {
 		 * FALSE is returned only if both are false, otherwise
 		 * we return CANNOT_COMPUTE.
 		 */
-		if ((rightResult == Result.FALSE) || (leftResult == Result.FALSE)) {
+		if ((rightResult == Result.FALSE) && (leftResult == Result.FALSE)) {
 			return Result.FALSE;
 		} else {
 			return Result.CANNOT_COMPUTE;
