@@ -22,12 +22,51 @@ options {
 PARSER_BEGIN(FormulaParser)
 package cz.cuni.mff.d3s.spl.core.impl.formula;
 
+import java.util.*;
+
 import cz.cuni.mff.d3s.spl.core.Formula;
+import cz.cuni.mff.d3s.spl.core.Data;
+import cz.cuni.mff.d3s.spl.core.MathematicalInterpretation;
+import cz.cuni.mff.d3s.spl.core.Result;
 import cz.cuni.mff.d3s.spl.core.impl.SimpleFormulas;
+import cz.cuni.mff.d3s.spl.core.impl.formula.Comparison;
 
 class FormulaParser {
 	public static Formula parse(String formula) {
-		return SimpleFormulas.createAsmallerThanB("A", "B");
+		return parseNoThrow(formula);
+	}
+	
+	private static Formula parseNoThrow(String formula) {
+		FormulaParser parser = new FormulaParser(formula);
+		try {
+			return parser.splFormula();
+		} catch (ParseException e) {
+			return DummyFormula.INSTANCE;
+		}
+	}
+	
+	private static class DummyFormula implements Formula {
+		public static Formula INSTANCE = new DummyFormula();
+		
+		private DummyFormula() {
+		}
+		
+		@Override
+		public void setInterpreation(MathematicalInterpretation interpretation) {
+		}
+
+		@Override
+		public void bind(String variable, Data data) {
+		}
+
+		@Override
+		public Result evaluate() {
+			return Result.CANNOT_COMPUTE;
+		}
+	}
+	
+	public FormulaParser(String formula) {
+		this(new java.io.BufferedReader(new java.io.StringReader(formula)));
 	}
 }
 
@@ -45,18 +84,91 @@ TOKEN : {
 	<IDENTIFIER: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
 	| <REAL: (["0"] | ( ["1"-"9"] ( ["0"-"9"] )* )) ("." ( ["0"-"9"] )* ) >
 	| <INT: ["0"] | ( ["1"-"9"] ( ["0"-"9"] )* ) >
-	| <CMP_EQ: "=">
-	| <CMP_GE: ">=">
-	| <CMP_LE: "<=">
-	| <LOGIC_AND: "&">
+	| <CMP_GT: ">">
+	| <CMP_LT: "<">
+	| <LOGIC_AND: "&&">
+	| <LOGIC_OR: "||">
 }
 
 Formula splFormula():
 {
-	
+	Formula tmp;
 }
 {
-	<EOF> {
-		return null;
+	tmp = logicFormulaOr() {
+		return tmp;
+	}
+}
+
+Formula logicFormulaOr():
+{
+	List<Formula> parts = new LinkedList<Formula>();
+	Formula tmp = null;
+}
+{
+	tmp = logicFormulaAnd() { parts.add(tmp); } ( <LOGIC_OR> tmp = logicFormulaAnd() { parts.add(tmp); } )* {
+		Formula result = parts.get(0); 
+		for (int i = 1; i < parts.size(); i++) {
+			result = new LogicOr(result, parts.get(i));
+		}
+		return result;
+	}
+}
+
+Formula logicFormulaAnd():
+{
+	List<Formula> parts = new LinkedList<Formula>();
+	Formula tmp;
+}
+{
+	tmp = logicFormulaAtomic() { parts.add(tmp); } ( <LOGIC_AND> tmp = logicFormulaAtomic() { parts.add(tmp); } )* {
+		Formula result = parts.get(0); 
+		for (int i = 1; i < parts.size(); i++) {
+			result = new LogicAnd(result, parts.get(i));
+		}
+		return result;
+	}
+}
+
+Formula logicFormulaAtomic():
+{
+	Formula comparison;
+}
+{
+	comparison = plainComparison() {
+		return comparison;
+	}
+}
+
+Formula plainComparison():
+{
+	String left;
+	String right;
+	Comparison.Operator op;
+}
+{
+	left = sourceName() op = comparisonOperator() right = sourceName() {
+		return new Comparison(left, right, op);
+	}
+}
+
+String sourceName():
+{
+	Token name;
+}
+{
+	name = <IDENTIFIER> {
+		return name.image;
+	}
+}
+
+Comparison.Operator comparisonOperator():
+{}
+{
+	<CMP_GT> {
+		return Comparison.Operator.GT;
+	}
+	| <CMP_LT> {
+		return Comparison.Operator.LT;
 	}
 }
