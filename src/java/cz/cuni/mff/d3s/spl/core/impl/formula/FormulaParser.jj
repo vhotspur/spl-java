@@ -80,6 +80,8 @@ TOKEN : {
 	| <CMP_LT: "<">
 	| <LOGIC_AND: "&&">
 	| <LOGIC_OR: "||">
+	| <LEFT_PAREN: "(">
+	| <RIGHT_PAREN: ")">
 }
 
 Formula splFormula():
@@ -124,11 +126,14 @@ Formula logicFormulaAnd():
 
 Formula logicFormulaAtomic():
 {
-	Formula comparison;
+	Formula atomic;
 }
 {
-	comparison = plainComparison() {
-		return comparison;
+	atomic = plainComparison() {
+		return atomic;
+	}
+	| <LEFT_PAREN> atomic = splFormula() <RIGHT_PAREN> {
+		return atomic;
 	}
 }
 
