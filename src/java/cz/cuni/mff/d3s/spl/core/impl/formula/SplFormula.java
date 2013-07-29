@@ -19,7 +19,44 @@ package cz.cuni.mff.d3s.spl.core.impl.formula;
 import cz.cuni.mff.d3s.spl.core.Formula;
 
 public class SplFormula {
-	public static Formula create(String formula) {
-		return FormulaParser.parse(formula);
+	public static Formula create(String formula) throws SplParseException {
+		try {
+			return FormulaParser.parse(formula);
+		} catch (TokenMgrError e) {
+			throw new SplParseException(e, formula);
+		} catch (ParseException e) {
+			throw new SplParseException(e, formula);
+		}
+	}
+	
+	public static class SplParseException extends Exception {
+		private static final long serialVersionUID = 1L;
+		
+		public SplParseException(Throwable cause) {
+			super(cause);
+		}
+		
+		SplParseException(ParseException cause, String formula) {
+			super(String.format("Parsing error in \"%s\" near %s (line %d, column %d).",
+					getFirstCharacters(formula, 15),
+					cause.currentToken.image,
+					cause.currentToken.endLine,
+					cause.currentToken.endColumn), cause);
+		}
+		
+		SplParseException(TokenMgrError cause, String formula) {
+			super(String.format("Lexical error in \"%s\".",
+					getFirstCharacters(formula, 15),
+					cause.getMessage()), cause);
+			
+		}
+		
+		private static String getFirstCharacters(String input, int recommendedLength) {
+			if (input.length() + 1 <= recommendedLength) {
+				return input;
+			} else {
+				return input.substring(0, recommendedLength - 3) + "...";
+			}
+		}
 	}
 }

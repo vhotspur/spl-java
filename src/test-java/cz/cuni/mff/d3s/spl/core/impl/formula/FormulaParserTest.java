@@ -35,6 +35,7 @@ import cz.cuni.mff.d3s.spl.core.MathematicalInterpretation;
 import cz.cuni.mff.d3s.spl.core.Result;
 import cz.cuni.mff.d3s.spl.core.impl.DataForTest;
 import cz.cuni.mff.d3s.spl.core.impl.InterpretationForTests;
+import cz.cuni.mff.d3s.spl.core.impl.formula.SplFormula.SplParseException;
 
 @RunWith(Parameterized.class)
 public class FormulaParserTest {
@@ -115,7 +116,7 @@ public class FormulaParserTest {
 	}
 	
 	@Test
-	public void parse() {
+	public void parse() throws SplParseException {
 		Formula formula = SplFormula.create(formulaAsString);
 		
 		assertNotNull(formula);
