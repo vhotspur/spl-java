@@ -23,45 +23,43 @@ import cz.cuni.mff.d3s.spl.core.Formula;
 import cz.cuni.mff.d3s.spl.core.MathematicalInterpretation;
 import cz.cuni.mff.d3s.spl.core.Result;
 
-abstract class LogicOp implements Formula {
-	protected Formula left;
-	protected Formula right;
+public final class LogicConst implements Formula {
+	public static final LogicConst TRUE = new LogicConst(Result.TRUE);
+	public static final LogicConst FALSE = new LogicConst(Result.FALSE);
+	public static final LogicConst UNKNOWN = new LogicConst(Result.CANNOT_COMPUTE);
 	
-	public LogicOp(Formula left, Formula right) {
-		this.left = left;
-		this.right = right;
+	private final Result evaluationResult;
+	
+	private LogicConst(Result result) {
+		evaluationResult = result;
 	}
 
 	@Override
 	public void setInterpreation(MathematicalInterpretation interpretation) {
-		left.setInterpreation(interpretation);
-		right.setInterpreation(interpretation);
+		/* Do nothing. */
 	}
 
 	@Override
 	public void bind(String variable, Data data) {
-		bindToMultiple(variable, data, left, right);
+		throw new NoSuchElementException("Constant cannot be binded.");
 	}
-	
-	static final void bindToMultiple(String variable, Data data, Formula... formulas) {
-		boolean somewhereBinded = false;
-		RuntimeException lastException = null;
-		
-		for (Formula f : formulas) {
-			try {
-				f.bind(variable, data);
-				somewhereBinded = true;
-			} catch (NoSuchElementException e) {
-				lastException = e;
-			}
-		}
-		if (!somewhereBinded) {
-			if (lastException != null) {
-				throw lastException;
-			}
-		}
+
+	@Override
+	public Result evaluate() {
+		return evaluationResult;
 	}
 	
 	@Override
-	abstract public Result evaluate();
+	public String toString() {
+		switch (evaluationResult) {
+		case CANNOT_COMPUTE:
+			return "uknown";
+		case FALSE:
+			return "false";
+		case TRUE:
+			return "true";
+		}
+		assert false;
+		return null;
+	}
 }

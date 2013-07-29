@@ -16,6 +16,31 @@
  */
 package cz.cuni.mff.d3s.spl.core.impl.formula;
 
-public class FormulaFromString {
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
+import cz.cuni.mff.d3s.spl.core.Result;
+import cz.cuni.mff.d3s.spl.core.impl.DataForTest;
+
+public class LogicConstTest {
+
+	@Test(expected=java.util.NoSuchElementException.class)
+	public void constantContainsNoVariable() {
+		LogicConst.TRUE.bind("abc", new DataForTest(5., 50));
+	}
+	
+	@Test
+	public void evaluateTrue() {
+		assertEquals(Result.TRUE, LogicConst.TRUE.evaluate());
+	}
+	
+	@Test
+	public void evaluateFalse() {
+		assertEquals(Result.FALSE, LogicConst.FALSE.evaluate());
+	}
+	
+	@Test
+	public void evaluateCannotCompute() {
+		assertEquals(Result.CANNOT_COMPUTE, LogicConst.UNKNOWN.evaluate());
+	}
 }

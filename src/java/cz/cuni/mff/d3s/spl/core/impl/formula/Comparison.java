@@ -16,6 +16,8 @@
  */
 package cz.cuni.mff.d3s.spl.core.impl.formula;
 
+import java.util.NoSuchElementException;
+
 import cz.cuni.mff.d3s.spl.core.Data;
 import cz.cuni.mff.d3s.spl.core.Formula;
 import cz.cuni.mff.d3s.spl.core.MathematicalInterpretation;
@@ -33,9 +35,12 @@ public class Comparison implements Formula {
 		public NamedDataSource(String name) {
 			this.name = name;
 		}
-		public void bind(String name, Data data) {
+		public boolean bind(String name, Data data) {
 			if (this.name.equals(name)) {
 				this.data = data;
+				return true;
+			} else {
+				return false;
 			}
 		}
 		public boolean valid() {
@@ -61,8 +66,12 @@ public class Comparison implements Formula {
 
 	@Override
 	public void bind(String variable, Data data) {
-		left.bind(variable, data);
-		right.bind(variable, data);
+		boolean leftOkay = left.bind(variable, data);
+		boolean rightOkay = right.bind(variable, data);
+		if (!leftOkay && !rightOkay) {
+			throw new NoSuchElementException(String.format(
+					"Uknown variable %s in comparison.", variable));
+		}
 	}
 
 	@Override
