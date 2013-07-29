@@ -61,6 +61,14 @@ public class FormulaParserTest {
 			{ TRU, "low < medium && medium < high" },
 			{ TRU, "low < medium && medium < high" },
 			
+			{ TRU, "(low < medium)" },
+			{ TRU, "(high < medium) || (medium < high)" },
+			{ TRU, "low < high && (low > medium || high > medium)" },
+			
+			{ TRU, "low < medium => low < medium" },
+			{ FAL, "low < medium => medium < low" },
+			{ TRU, "medium < low => low > high" },
+			
 			/*
 			 * Test Kleene logic.
 			 * (The combinations are tried in FALSE, UKNOWN, TRUE.)
