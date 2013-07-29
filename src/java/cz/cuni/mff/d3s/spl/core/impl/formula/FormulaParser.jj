@@ -80,6 +80,7 @@ TOKEN : {
 	| <CMP_LT: "<">
 	| <LOGIC_AND: "&&">
 	| <LOGIC_OR: "||">
+	| <LOGIC_IMPLY: "=>">
 	| <LEFT_PAREN: "(">
 	| <RIGHT_PAREN: ")">
 }
@@ -89,8 +90,23 @@ Formula splFormula():
 	Formula tmp;
 }
 {
-	tmp = logicFormulaOr() {
+	tmp = logicFormulaImply() {
 		return tmp;
+	}
+}
+
+Formula logicFormulaImply():
+{
+	List<Formula> parts = new LinkedList<Formula>();
+	Formula tmp;
+}
+{
+	tmp = logicFormulaOr() { parts.add(tmp); } ( <LOGIC_IMPLY> tmp = logicFormulaOr() { parts.add(tmp); } )* {
+		Formula result = parts.get(0); 
+		for (int i = 1; i < parts.size(); i++) {
+			result = new LogicImply(result, parts.get(i));
+		}
+		return result;
 	}
 }
 
