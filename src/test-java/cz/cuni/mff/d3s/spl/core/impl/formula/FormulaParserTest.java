@@ -51,14 +51,9 @@ public class FormulaParserTest {
 	public static Collection<Object[]> createParameters() {
 		return Arrays.asList(new Object[][] {
 			{ TRU, "low < high" },
-			{ FAL, "high < low" },
-			{ UNK, "empty < high" },
 			
 			{ TRU, "high > low" },
-			{ FAL, "low > high" },
-			{ UNK, "high > empty" },
 			
-			{ TRU, "low < medium && medium < high" },
 			{ TRU, "low < medium && medium < high" },
 			
 			{ TRU, "(low < medium)" },
@@ -68,31 +63,6 @@ public class FormulaParserTest {
 			{ TRU, "low < medium => low < medium" },
 			{ FAL, "low < medium => medium < low" },
 			{ TRU, "medium < low => low > high" },
-			
-			/*
-			 * Test Kleene logic.
-			 * (The combinations are tried in FALSE, UKNOWN, TRUE.)
-			 */
-			/* AND */
-			{ FAL, "  low > medium && medium > high" },
-			{ FAL, "  low > medium &&  empty > high" },
-			{ FAL, "  low > medium && medium < high" },
-			{ FAL, "empty > medium && medium > high" },
-			{ UNK, "empty > medium &&  empty > high" },
-			{ UNK, "empty > medium && medium < high" },
-			{ FAL, "  low < medium && medium > high" },
-			{ UNK, "  low < medium &&  empty > high" },
-			{ TRU, "  low < medium && medium < high" },
-			/* OR */
-			{ FAL, "  low > medium || medium > high" },
-			{ UNK, "  low > medium ||  empty > high" },
-			{ TRU, "  low > medium || medium < high" },
-			{ UNK, "empty > medium || medium > high" },
-			{ UNK, "empty > medium ||  empty > high" },
-			{ TRU, "empty > medium || medium < high" },
-			{ TRU, "  low < medium || medium > high" },
-			{ TRU, "  low < medium ||  empty > high" },
-			{ TRU, "  low < medium || medium < high" },
 		});
 	}
 	
