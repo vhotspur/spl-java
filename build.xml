@@ -29,6 +29,7 @@
 	<property name="classes.build.dir" value="${build.dir}/classes" />
 	<property name="test.classes.build.dir" value="${build.dir}/test-classes" />
 	<property name="test.results.dir" value="${build.dir}/test-results" />
+	<property name="tests.to.execute" value="*Test*" />
 	<property name="demo.classes.build.dir" value="${build.dir}/demo-classes" />
 	<property name="jar.build.dir" value="${build.dir}/jars" /> 
 	<property name="javadoc.build.dir" value="${build.dir}/javadoc" />
@@ -147,7 +148,7 @@
 			
 			<batchtest fork="yes" todir="${test.results.dir}">
 				<fileset dir="${test.classes.build.dir}">
-					<include name="**/*Test*.class"/>
+					<include name="**/${tests.to.execute}.class"/>
 				</fileset>
 			</batchtest>
 		</junit>
