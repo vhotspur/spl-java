@@ -16,6 +16,8 @@
  */
 package cz.cuni.mff.d3s.spl.core.impl.formula;
 
+import java.util.NoSuchElementException;
+
 import cz.cuni.mff.d3s.spl.core.Data;
 import cz.cuni.mff.d3s.spl.core.Formula;
 import cz.cuni.mff.d3s.spl.core.MathematicalInterpretation;
@@ -38,10 +40,28 @@ abstract class LogicOp implements Formula {
 
 	@Override
 	public void bind(String variable, Data data) {
-		left.bind(variable, data);
-		right.bind(variable, data);
+		bindToMultiple(variable, data, left, right);
 	}
-
+	
+	static final void bindToMultiple(String variable, Data data, Formula... formulas) {
+		boolean somewhereBinded = false;
+		RuntimeException lastException = null;
+		
+		for (Formula f : formulas) {
+			try {
+				f.bind(variable, data);
+				somewhereBinded = true;
+			} catch (NoSuchElementException e) {
+				lastException = e;
+			}
+		}
+		if (!somewhereBinded) {
+			if (lastException != null) {
+				throw lastException;
+			}
+		}
+	}
+	
 	@Override
 	abstract public Result evaluate();
 }
