@@ -18,12 +18,15 @@ package cz.cuni.mff.d3s.spl.core.impl;
 
 import cz.cuni.mff.d3s.spl.core.InvocationFilter;
 import cz.cuni.mff.d3s.spl.core.MeasurementConsumer;
+import cz.cuni.mff.d3s.spl.instrumentation.ClassLoaderFilter;
 
 public class ConstLikeImplementations {
 	public static final InvocationFilter ALWAYS_MEASURE_FILTER = new ConstAnswerInvocationFilter(true);
 	public static final InvocationFilter NEVER_MEASURE_FILTER = new ConstAnswerInvocationFilter(false);
 	
 	public static final MeasurementConsumer NULL_MEASUREMENT_CONSUMER = new NullMeasurementConsumer();
+	
+	public static final ClassLoaderFilter ANY_CLASS_LOADER = new AnyClassLoaderFilter();
 	
 	
 	private static class ConstAnswerInvocationFilter implements InvocationFilter {
@@ -49,6 +52,19 @@ public class ConstLikeImplementations {
 		@Override
 		public void submit(long when, long duration, Object... args) {
 			/* Do nothing. */
+		}
+		
+	}
+	
+	private static class AnyClassLoaderFilter implements ClassLoaderFilter {
+		@Override
+		public boolean instrumentClassesFromThisClassLoader(ClassLoader loader) {
+			return true;
+		}
+		
+		@Override
+		public String toString() {
+			return "any class loader";
 		}
 		
 	}

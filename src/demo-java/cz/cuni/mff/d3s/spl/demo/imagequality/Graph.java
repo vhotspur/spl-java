@@ -44,7 +44,7 @@ public class Graph {
 	public void render() {
 		plot = new XYPlot(data);
 		LineRenderer lines = new DefaultLineRenderer2D();
-		lines.setSetting(DefaultLineRenderer2D.COLOR, Color.BLUE);
+		lines.setSetting(LineRenderer.COLOR, Color.BLUE);
 
 		plot.setLineRenderer(data, lines);
 		

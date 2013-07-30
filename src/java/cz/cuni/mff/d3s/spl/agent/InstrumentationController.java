@@ -93,6 +93,15 @@ class InstrumentationController {
 			snippets.add(instrumentation);
 		}
 	}
+	
+	public static void removeSnippet(InstrumentationSnippet instrumentation) {
+		if (instrumentation == null) {
+			return;
+		}
+		synchronized (snippets) {
+			snippets.remove(instrumentation);
+		}
+	}
 		
 	public static void reinstrument(String klass) {
 		/*
