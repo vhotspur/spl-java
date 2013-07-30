@@ -25,6 +25,7 @@ import cz.cuni.mff.d3s.spl.core.MeasurementSite;
 import cz.cuni.mff.d3s.spl.instrumentation.InstrumentationSnippet;
 import cz.cuni.mff.d3s.spl.probe.Probe;
 
+/** Low-level access to SPL run-time framework. */
 public final class SPL {
 	private static Map<String, MeasurementSite> sites = new HashMap<>();
 	private static Map<String, Data> datas = new HashMap<>();

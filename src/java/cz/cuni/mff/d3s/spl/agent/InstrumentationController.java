@@ -28,6 +28,9 @@ import java.util.WeakHashMap;
 
 import cz.cuni.mff.d3s.spl.instrumentation.InstrumentationSnippet;
 
+/** Keeps track of instrumentation snippets currently in use and controls
+ * the instrumentation.
+ */
 class InstrumentationController {
 	private static Instrumentation instrumentationEngine;
 	private static Set<ClassLoader> knownClassLoaders;

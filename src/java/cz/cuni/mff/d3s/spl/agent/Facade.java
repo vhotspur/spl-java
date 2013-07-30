@@ -25,6 +25,7 @@ import cz.cuni.mff.d3s.spl.core.impl.PlainBufferDataSource;
 import cz.cuni.mff.d3s.spl.instrumentation.InstrumentationSnippet;
 import cz.cuni.mff.d3s.spl.instrumentation.SnippetConfigurator;
 
+/** High-level access to SPL run-time framework. */
 public final class Facade {
 	public static MeasurementSite createAndRegisterSite(String id) {
 		Data data = new PlainBufferDataSource();

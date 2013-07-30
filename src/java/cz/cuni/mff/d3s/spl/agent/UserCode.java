@@ -23,7 +23,9 @@ import java.util.List;
 import cz.cuni.mff.d3s.spl.annotations.AtExit;
 import cz.cuni.mff.d3s.spl.annotations.AtStart;
 
-public class UserCode {
+/** Helper class to execute user-provided code with {@AtStart}/{@AtExit}.
+ */
+class UserCode {
 	private static final Object[] NO_ARGS = {};
 	
 	public static void runFromClass(String classname) {

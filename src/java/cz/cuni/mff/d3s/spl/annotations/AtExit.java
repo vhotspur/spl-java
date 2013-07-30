@@ -21,6 +21,19 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/** Marks method to be executed at program termination.
+ * 
+ * The annotated method is expected to be of public static void type
+ * with no arguments.
+ * <p>
+ * The method is registered from the agent.
+ * Thus the code will typically run in a slightly different environment
+ * than the normal code.
+ * <p>
+ * The agent uses Runtime.addShutdownHook to register the user method.
+ * Abnormal termination of the JVM may cause that the user code is not
+ * executed at all.
+ */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AtExit {
