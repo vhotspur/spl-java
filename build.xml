@@ -147,9 +147,21 @@
 				<![CDATA[
 				<i>Copyright &#169; 2013
 				Charles University in Prague.</i>
+				<script src="doc-files/jquery/jquery-1.6.min.js" type="text/javascript"></script>
+				<script src="doc-files/jquery/syntax/jquery.syntax.min.js" type="text/javascript"></script>
+				<script type="text/javascript">
+				// This function is executed when the page has finished loading.
+				jQuery(function($) {
+				// This function highlights (by default) pre and code tags which are annotated correctly.
+				$.syntax();
+				});
+				</script>
 				]]>
 			</bottom>
 		</javadoc>
+		<copy todir="${javadoc.build.dir}">
+			<fileset dir="${java.src.dir}" includes="**/doc-files/**" erroronmissingdir="false"/>
+		</copy>
 	</target>
 	
 	<target name="test" depends="compile-tests,agent">

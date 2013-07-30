@@ -4,8 +4,97 @@
 </head>
 <body>
 <p>Performance-based adaptation framework for Java.</p>
-<p>
 
+<h2>Introduction</h2>
+<p>
+The purpose of this framework is to allow applications adapt their behaviour
+based on their current or past performance.
+The framework allows the developer to express the performance questions
+in an elegant way through SPL &mdash; Stochastic Performance Logic &mdash;
+and the framework offers the possibilities to manually
+insert performance probes or to automatically instrument already running
+bytecode.
+The SPL allows to capture the assumptions in a straightforward manner
+yet it uses robust statistical testing to give the best results.
+The implementation tries to minimize the overhead.
 </p>
+<p>
+An example of performance-aware application follows.
+Imagine a web application that generates a plot displaying some values
+over time, such as air temperature over last few days.
+The rendering takes some time and is faster when there are less data to
+display.
+The question that arises is: how much data to display?
+On one side of the equation is the user who wants the data rendered as
+precisely as possible, on the other side is the performance of the server
+that limits number of processed requests.
+</p>
+<p>
+The SPL framework aims to solve this challenge without too much of extra
+work.
+It is rather simple to imagine the solution written maually.
+The rendering method would measure its duration time and the time would
+be compared either with absolute value or with average over last few
+minutes.
+If the time required to render the plot would grow, lower resolution
+(less data) plot would be rendered.
+The naive approach has few drawbacks.
+Among them is poor maintanability as the developer needs to edit the source
+code and a lot of boiler plate code that captures the actual condition.
+Furthermore, there are additional challenges on the statistical side of
+the problem, such as filtering of the outliers or parameter tunning.
+</p>
+<p>
+With SPL, the developer can focus solely on the adaptation logic and leave
+other things to the framework.
+Below is such example, the quality of the image is here determined by the
+system load.
+</p>
+<pre class="syntax java">
+public class PlotRendering implements HttpHandler {
+	private Formula machineIdle;
+	
+	public PlotRendering() {
+		/*
+		 * Create the formula - the boundary is 0.2 of
+		 * system load. The word load serves as a variable
+		 * to be assigned to later.
+		 */
+		machineIdle = SplFormula.create("load &lt; 0.2");
+		
+		/*
+		 * Now we assing the variable "load" the value of
+		 * current system load. No evaluation is done at the
+		 * moment.
+		 */
+		machineIdle.bind("load", SystemLoad.INSTANCE);
+	}
+	
+	&#x40;Override
+	public void handle(HttpExchange exchange) throws IOException {
+		DataTable values = null;
+		
+		/*
+		 * The function evaluate queries the provider binded
+		 * earlier - in this case the system load - for the
+		 * most up-to-date data and evaluates them.
+		 * If the formula holds, the system is probably idle
+		 * and we would serve full image. Otherwise, more
+		 * approximate data would be used.
+		 */
+		if (machineIdle.evaluate() == Result.TRUE) {
+			values = DataToVisualize.getDaily();
+		} else {
+			values = DataToVisualize.getWeekly();
+		}
+		
+		/*
+		 * Code for rendering the graph and sending the
+		 * response is omitted.
+		 */
+	}
+}
+</pre>
+
 </body>
 </html>
