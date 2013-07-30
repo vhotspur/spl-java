@@ -37,26 +37,6 @@ class FormulaParser {
 		return parser.splFormula();
 	}
 	
-	private static class DummyFormula implements Formula {
-		public static Formula INSTANCE = new DummyFormula();
-		
-		private DummyFormula() {
-		}
-		
-		@Override
-		public void setInterpreation(MathematicalInterpretation interpretation) {
-		}
-
-		@Override
-		public void bind(String variable, Data data) {
-		}
-
-		@Override
-		public Result evaluate() {
-			return Result.CANNOT_COMPUTE;
-		}
-	}
-	
 	public FormulaParser(String formula) {
 		this(new java.io.BufferedReader(new java.io.StringReader(formula)));
 	}
@@ -75,6 +55,7 @@ SKIP :
 TOKEN : {
 	<IDENTIFIER: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
 	| <REAL: (["0"] | ( ["1"-"9"] ( ["0"-"9"] )* )) ("." ( ["0"-"9"] )* ) >
+	| <REAL2: "." ["0"-"9"] ( ["0"-"9"] )* >
 	| <INT: ["0"] | ( ["1"-"9"] ( ["0"-"9"] )* ) >
 	| <CMP_GT: ">">
 	| <CMP_LT: "<">
@@ -155,13 +136,22 @@ Formula logicFormulaAtomic():
 
 Formula plainComparison():
 {
-	String left;
-	String right;
+	String leftName;
+	double leftConst;
+	String rightName;
+	double rightConst;
 	Comparison.Operator op;
 }
 {
-	left = sourceName() op = comparisonOperator() right = sourceName() {
-		return new Comparison(left, right, op);
+	LOOKAHEAD(3)
+	leftName = sourceName() op = comparisonOperator() rightName = sourceName() {
+		return new Comparison(leftName, rightName, op);
+	}
+	| leftConst = constantSource() op = inverseComparisonOperator() rightName = sourceName() {
+		return new ComparisonWithConst(rightName, leftConst, op);
+	}
+	| leftName = sourceName() op = comparisonOperator() rightConst = constantSource() {
+		return new ComparisonWithConst(leftName, rightConst, op);
 	}
 }
 
@@ -175,6 +165,22 @@ String sourceName():
 	}
 }
 
+double constantSource():
+{
+	Token t;
+}
+{
+	t = <INT> {
+		return Integer.valueOf(t.image);
+	}
+	| t = <REAL> {
+		return Double.valueOf(t.image);
+	}
+	| t = <REAL2> {
+		return Double.valueOf("0" + t.image);
+	}
+}
+
 Comparison.Operator comparisonOperator():
 {}
 {
@@ -185,3 +191,16 @@ Comparison.Operator comparisonOperator():
 		return Comparison.Operator.LT;
 	}
 }
+
+Comparison.Operator inverseComparisonOperator():
+{}
+{
+	<CMP_LT> {
+		return Comparison.Operator.GT;
+	}
+	| <CMP_GT> {
+		return Comparison.Operator.LT;
+	}
+}
+
+

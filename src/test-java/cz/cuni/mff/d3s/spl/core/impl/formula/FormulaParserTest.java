@@ -54,6 +54,11 @@ public class FormulaParserTest {
 			
 			{ TRU, "high > low" },
 			
+			{ TRU, "low < 100" },
+			{ FAL, "1.25 > high" },
+			{ TRU, "low > .5"},
+			{ TRU, "low > 0."},
+			
 			{ TRU, "low < medium && medium < high" },
 			
 			{ TRU, "(low < medium)" },
