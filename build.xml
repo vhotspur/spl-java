@@ -124,14 +124,19 @@
 	</target>
 	
 	
-	<target name="refdoc">
+	<target name="refdoc" depends="compile-parser">
 		<mkdir dir="${javadoc.build.dir}" />
 		<javadoc destdir="${javadoc.build.dir}" author="true"
 				version="true" use="true"
 				overview="${java.src.dir}/overview.html"
 				windowtitle="${ant.project.name}">
-			<packageset dir="${java.src.dir}" defaultexcludes="yes">
-			</packageset>
+			<packageset
+				dir="${java.src.dir}"
+				defaultexcludes="yes" />
+			<packageset
+				dir="${parser.build.dir}"
+				defaultexcludes="yes" />
+			<classpath path="${lib.dir}/javassist.jar" />
 			<doctitle>
 				<![CDATA[<h1>
 				Stochastic Performance Logic (SPL) adaptation
