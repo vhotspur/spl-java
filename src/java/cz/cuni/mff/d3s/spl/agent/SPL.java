@@ -21,50 +21,19 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import cz.cuni.mff.d3s.spl.core.Data;
-import cz.cuni.mff.d3s.spl.core.MeasurementSite;
 import cz.cuni.mff.d3s.spl.instrumentation.InstrumentationSnippet;
 import cz.cuni.mff.d3s.spl.probe.Probe;
 
 /** Low-level access to SPL run-time framework. */
 public final class SPL {
-	private static Map<String, MeasurementSite> sites = new HashMap<>();
 	private static Map<String, Data> datas = new HashMap<>();
 	private static Map<String, Probe> probes = new HashMap<>();
 	
 	public static synchronized void __clear() {
-		sites.clear();
 		datas.clear();
 		// TODO: reload all classes without any instrumentation
 	}
-	
-	public static void registerSite(String id, MeasurementSite site) {
-		if ((id == null) || id.isEmpty()) {
-			throw new IllegalArgumentException("Site id cannot be empty.");
-		}
-		if (site == null) {
-			throw new IllegalArgumentException("Site cannot be null.");
-		}
-		synchronized (sites) {
-			if (sites.containsKey(id)) {
-				// FIXME: better exception class
-				throw new IllegalArgumentException("Site already exists.");
-			}
-			sites.put(id, site);
-		}
-	}
-	
-	public static void unregisterSite(String id) {
-		synchronized (sites) {
-			sites.remove(id);
-		}
-	}
-	
-	public static MeasurementSite getSite(String id) {
-		synchronized (sites) {
-			return sites.get(id);
-		}
-	}
-		
+			
 	public static void registerDataSource(String id, Data source) {
 		if ((id == null) || id.isEmpty()) {
 			throw new IllegalArgumentException("Source id cannot be empty.");

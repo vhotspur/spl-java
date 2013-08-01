@@ -17,30 +17,12 @@
 package cz.cuni.mff.d3s.spl.agent;
 
 import cz.cuni.mff.d3s.spl.core.Data;
-import cz.cuni.mff.d3s.spl.core.MeasurementConsumer;
-import cz.cuni.mff.d3s.spl.core.MeasurementSite;
-import cz.cuni.mff.d3s.spl.core.impl.ConstLikeImplementations;
-import cz.cuni.mff.d3s.spl.core.impl.ForwardingMeasurementConsumer;
 import cz.cuni.mff.d3s.spl.core.impl.PlainBufferDataSource;
-import cz.cuni.mff.d3s.spl.instrumentation.InstrumentationSnippet;
-import cz.cuni.mff.d3s.spl.instrumentation.SnippetConfigurator;
+import cz.cuni.mff.d3s.spl.probe.InstrumentationProbeControllerBuilder;
+import cz.cuni.mff.d3s.spl.probe.ProbeController;
 
 /** High-level access to SPL run-time framework. */
 public final class Facade {
-	public static MeasurementSite createAndRegisterSite(String id) {
-		Data data = new PlainBufferDataSource();
-		MeasurementConsumer consumer = new ForwardingMeasurementConsumer(data);
-		MeasurementSite site = new MeasurementSite(ConstLikeImplementations.ALWAYS_MEASURE_FILTER, consumer);
-		SPL.registerSite(id, site);
-		try {
-			SPL.registerDataSource(id, data);
-		} catch (RuntimeException e) {
-			SPL.unregisterSite(id);
-			throw e;
-		}
-		return site;
-	}
-	
 	public static Data instrument(String what) {
 		String[] parts = what.split("#");
 		if (parts.length != 2) {
@@ -51,21 +33,13 @@ public final class Facade {
 		String id = String.format("instrument:%s#%s", klass, method);
 		
 		Data data = new PlainBufferDataSource();
-		MeasurementConsumer consumer = new ForwardingMeasurementConsumer(data);
-		MeasurementSite site = new MeasurementSite(ConstLikeImplementations.ALWAYS_MEASURE_FILTER, consumer);
-		SPL.registerSite(id, site);
-		try {
-			SPL.registerDataSource(id, data);
-		} catch (RuntimeException e) {
-			SPL.unregisterSite(id);
-			throw e;
-		}
+		SPL.registerDataSource(id, data);
 		
-		SnippetConfigurator instrumentationConfig = new SnippetConfigurator(klass, method);
-		InstrumentationSnippet instrumentation = instrumentationConfig.getSnippetForSingleMethodMeasuring();
-		SPL.registerInstrumentation(instrumentation);
+		InstrumentationProbeControllerBuilder bld = new InstrumentationProbeControllerBuilder(what);
+		bld.forwardSamplesToDataSource(data);
 		
-		SPL.reloadClass(klass);
+		ProbeController ctl = bld.get();
+		ctl.activate();
 		
 		return data;
 	}
