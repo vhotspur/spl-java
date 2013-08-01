@@ -17,9 +17,9 @@
 package cz.cuni.mff.d3s.spl.agent;
 
 import cz.cuni.mff.d3s.spl.core.Data;
-import cz.cuni.mff.d3s.spl.core.impl.PlainBufferDataSource;
+import cz.cuni.mff.d3s.spl.core.ProbeController;
 import cz.cuni.mff.d3s.spl.probe.InstrumentationProbeControllerBuilder;
-import cz.cuni.mff.d3s.spl.probe.ProbeController;
+import cz.cuni.mff.d3s.spl.stock.PlainBufferDataSource;
 
 /** High-level access to SPL run-time framework. */
 public final class Facade {

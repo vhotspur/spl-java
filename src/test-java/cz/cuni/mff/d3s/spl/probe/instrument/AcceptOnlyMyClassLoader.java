@@ -14,17 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cz.cuni.mff.d3s.spl.probe;
+package cz.cuni.mff.d3s.spl.probe.instrument;
 
-import cz.cuni.mff.d3s.spl.core.ProbeController;
+import cz.cuni.mff.d3s.spl.instrumentation.ClassLoaderFilter;
 
-public class ManualProbeControllerBuilder extends ProbeControllerBuilderBase {
-	public ManualProbeControllerBuilder(String id) {
-		super();
+public class AcceptOnlyMyClassLoader implements ClassLoaderFilter {
+
+	@Override
+	public boolean instrumentClassesFromThisClassLoader(ClassLoader loader) {
+		return loader instanceof MyClassLoader;
 	}
 
 	@Override
-	protected ProbeController createController() {
-		return new ManualProbeController(invocationFilter, dataConsumer);
+	public String toString() {
+		return "only MyClassLoader";
 	}
 }

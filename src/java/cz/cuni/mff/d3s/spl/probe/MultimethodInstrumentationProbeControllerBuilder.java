@@ -16,9 +16,10 @@
  */
 package cz.cuni.mff.d3s.spl.probe;
 
-import cz.cuni.mff.d3s.spl.core.impl.ConstLikeImplementations;
+import cz.cuni.mff.d3s.spl.core.ProbeController;
 import cz.cuni.mff.d3s.spl.instrumentation.ClassLoaderFilter;
 import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgument;
+import cz.cuni.mff.d3s.spl.stock.ConstLikeImplementations;
 
 public class MultimethodInstrumentationProbeControllerBuilder extends InstrumentationProbeControllerBuilderBase {
 	private ClassLoaderFilter startMethodLoaderFilter = null;

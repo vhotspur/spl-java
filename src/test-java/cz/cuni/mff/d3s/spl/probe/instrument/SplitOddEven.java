@@ -14,17 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cz.cuni.mff.d3s.spl.probe;
+package cz.cuni.mff.d3s.spl.probe.instrument;
 
-import cz.cuni.mff.d3s.spl.core.ProbeController;
+import java.util.List;
 
-public class ManualProbeControllerBuilder extends ProbeControllerBuilderBase {
-	public ManualProbeControllerBuilder(String id) {
-		super();
+import cz.cuni.mff.d3s.spl.core.Data;
+import cz.cuni.mff.d3s.spl.core.MeasurementConsumer;
+
+public class SplitOddEven implements MeasurementConsumer {
+	private Data odd;
+	private Data even;
+	
+	public SplitOddEven(Data odd, Data even) {
+		this.odd = odd;
+		this.even = even;
 	}
-
+	
 	@Override
-	protected ProbeController createController() {
-		return new ManualProbeController(invocationFilter, dataConsumer);
+	public void submit(long when, long duration, Object... args) {
+		List<?> list = (List<?>) args[0];
+		if ((list.size() % 2) == 0) {
+			even.addValue(when, duration);
+		} else {
+			odd.addValue(when, duration);
+		}
 	}
+
 }

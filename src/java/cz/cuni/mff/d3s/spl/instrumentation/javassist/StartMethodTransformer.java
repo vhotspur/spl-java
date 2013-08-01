@@ -91,7 +91,7 @@ public class StartMethodTransformer implements Transformer {
 			String initProbe = addLocalVariableAndPrepareInitialization(
 					method,
 					"_probe",
-					"cz.cuni.mff.d3s.spl.probe.Probe",
+					"cz.cuni.mff.d3s.spl.core.Probe",
 					"%1$s_probe = cz.cuni.mff.d3s.spl.agent.SPL.getProbe(\"%4$s\");",
 					probeId);
 			String startStopwatch = String.format("cz.cuni.mff.d3s.spl.probe.NonLocalStopwatch.start(%s_probe, %s, %s);",

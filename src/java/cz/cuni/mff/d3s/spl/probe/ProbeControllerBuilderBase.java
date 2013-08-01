@@ -19,9 +19,10 @@ package cz.cuni.mff.d3s.spl.probe;
 import cz.cuni.mff.d3s.spl.core.Data;
 import cz.cuni.mff.d3s.spl.core.InvocationFilter;
 import cz.cuni.mff.d3s.spl.core.MeasurementConsumer;
-import cz.cuni.mff.d3s.spl.core.impl.ConstLikeImplementations;
-import cz.cuni.mff.d3s.spl.core.impl.ForwardingMeasurementConsumer;
-import cz.cuni.mff.d3s.spl.core.impl.PlainBufferDataSource;
+import cz.cuni.mff.d3s.spl.core.ProbeController;
+import cz.cuni.mff.d3s.spl.stock.ConstLikeImplementations;
+import cz.cuni.mff.d3s.spl.stock.ForwardingMeasurementConsumer;
+import cz.cuni.mff.d3s.spl.stock.PlainBufferDataSource;
 
 abstract class ProbeControllerBuilderBase {
 	protected MeasurementConsumer dataConsumer = null;

@@ -19,11 +19,11 @@ package cz.cuni.mff.d3s.spl.demo.imagequality.monitor;
 import cz.cuni.mff.d3s.spl.annotations.AtExit;
 import cz.cuni.mff.d3s.spl.annotations.AtStart;
 import cz.cuni.mff.d3s.spl.core.Data;
+import cz.cuni.mff.d3s.spl.core.ProbeController;
 import cz.cuni.mff.d3s.spl.core.StatisticSnapshot;
-import cz.cuni.mff.d3s.spl.core.impl.PlainBufferDataSource;
 import cz.cuni.mff.d3s.spl.instrumentation.ExtraArgument;
 import cz.cuni.mff.d3s.spl.probe.InstrumentationProbeControllerBuilder;
-import cz.cuni.mff.d3s.spl.probe.ProbeController;
+import cz.cuni.mff.d3s.spl.stock.PlainBufferDataSource;
 import cz.cuni.mff.d3s.spl.utils.StringUtils;
 
 public class Monitor implements Runnable {

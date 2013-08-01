@@ -29,7 +29,7 @@
 	<property name="build.dir" value="out" />
 	<property name="classes.build.dir" value="${build.dir}/classes" />
 	<property name="parser.build.dir" value="${build.dir}/parser-src" />
-	<property name="parser.package.path" value="cz/cuni/mff/d3s/spl/core/impl/formula" />
+	<property name="parser.package.path" value="cz/cuni/mff/d3s/spl/formula" />
 	<property name="test.classes.build.dir" value="${build.dir}/test-classes" />
 	<property name="test.results.dir" value="${build.dir}/test-results" />
 	<property name="tests.to.execute" value="*Test*" />

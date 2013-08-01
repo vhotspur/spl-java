@@ -19,6 +19,8 @@ package cz.cuni.mff.d3s.spl.probe;
 import cz.cuni.mff.d3s.spl.agent.SPL;
 import cz.cuni.mff.d3s.spl.core.InvocationFilter;
 import cz.cuni.mff.d3s.spl.core.MeasurementConsumer;
+import cz.cuni.mff.d3s.spl.core.Probe;
+import cz.cuni.mff.d3s.spl.core.ProbeController;
 import cz.cuni.mff.d3s.spl.instrumentation.ClassLoaderFilter;
 import cz.cuni.mff.d3s.spl.instrumentation.ExtraArguments;
 import cz.cuni.mff.d3s.spl.instrumentation.javassist.JavassistSnippet;

@@ -16,6 +16,8 @@
  */
 package cz.cuni.mff.d3s.spl.probe;
 
+import cz.cuni.mff.d3s.spl.core.ProbeController;
+
 public class InstrumentationProbeControllerBuilder extends InstrumentationProbeControllerBuilderBase {
 	private String methodName;
 

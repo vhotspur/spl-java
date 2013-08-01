@@ -16,15 +16,17 @@
  */
 package cz.cuni.mff.d3s.spl.probe;
 
-import cz.cuni.mff.d3s.spl.core.ProbeController;
+import org.junit.Ignore;
 
-public class ManualProbeControllerBuilder extends ProbeControllerBuilderBase {
-	public ManualProbeControllerBuilder(String id) {
-		super();
-	}
+import cz.cuni.mff.d3s.spl.core.InvocationFilter;
+
+@Ignore
+public class AcceptOnlyOddSizes implements InvocationFilter {
 
 	@Override
-	protected ProbeController createController() {
-		return new ManualProbeController(invocationFilter, dataConsumer);
+	public boolean measureThisInvocation(Object... args) {
+		Integer size = (Integer) args[0];
+		return (size % 2) == 1;
 	}
+
 }

@@ -16,7 +16,8 @@
  */
 package cz.cuni.mff.d3s.spl.probe;
 
-import cz.cuni.mff.d3s.spl.measure.DurationStopwatch;
+import cz.cuni.mff.d3s.spl.core.DurationStopwatch;
+import cz.cuni.mff.d3s.spl.core.Probe;
 
 public class ProbeStopwatch implements DurationStopwatch {
 

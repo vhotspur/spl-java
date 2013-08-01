@@ -14,17 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cz.cuni.mff.d3s.spl.probe;
+package cz.cuni.mff.d3s.spl.stock;
 
-import cz.cuni.mff.d3s.spl.core.ProbeController;
+import cz.cuni.mff.d3s.spl.core.Data;
+import cz.cuni.mff.d3s.spl.core.MeasurementConsumer;
 
-public class ManualProbeControllerBuilder extends ProbeControllerBuilderBase {
-	public ManualProbeControllerBuilder(String id) {
-		super();
+public class ForwardingMeasurementConsumer implements MeasurementConsumer {
+	private Data consumer;
+	
+	public ForwardingMeasurementConsumer(Data target) {
+		consumer = target;
 	}
-
+	
 	@Override
-	protected ProbeController createController() {
-		return new ManualProbeController(invocationFilter, dataConsumer);
+	public void submit(long when, long duration, Object... args) {
+		consumer.addValue(when, duration);
 	}
+	
 }

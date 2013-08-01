@@ -18,6 +18,8 @@ package cz.cuni.mff.d3s.spl.probe;
 
 import cz.cuni.mff.d3s.spl.core.InvocationFilter;
 import cz.cuni.mff.d3s.spl.core.MeasurementConsumer;
+import cz.cuni.mff.d3s.spl.core.Probe;
+import cz.cuni.mff.d3s.spl.core.ProbeController;
 
 public class ManualProbeController implements ProbeController {
 	private ManualProbe probe;

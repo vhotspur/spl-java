@@ -14,17 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cz.cuni.mff.d3s.spl.probe;
+package cz.cuni.mff.d3s.spl.core;
 
-import cz.cuni.mff.d3s.spl.core.ProbeController;
-
-public class ManualProbeControllerBuilder extends ProbeControllerBuilderBase {
-	public ManualProbeControllerBuilder(String id) {
-		super();
-	}
-
-	@Override
-	protected ProbeController createController() {
-		return new ManualProbeController(invocationFilter, dataConsumer);
-	}
+public interface Probe {
+	public boolean isActive(Object... args);
+	public void submit(long when, long duration, Object... args);
 }

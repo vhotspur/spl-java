@@ -21,8 +21,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import cz.cuni.mff.d3s.spl.core.Data;
+import cz.cuni.mff.d3s.spl.core.Probe;
 import cz.cuni.mff.d3s.spl.instrumentation.InstrumentationSnippet;
-import cz.cuni.mff.d3s.spl.probe.Probe;
 
 /** Low-level access to SPL run-time framework. */
 public final class SPL {

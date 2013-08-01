@@ -86,12 +86,12 @@ public class SingleMethodTransformer implements Transformer {
 			String initProbe = addLocalVariableAndPrepareInitialization(
 					method,
 					"_probe",
-					"cz.cuni.mff.d3s.spl.probe.Probe",
+					"cz.cuni.mff.d3s.spl.core.Probe",
 					"%1$s_probe = cz.cuni.mff.d3s.spl.agent.SPL.getProbe(\"%4$s\");",
 					probeId);
 			String initStopwatch = addLocalVariableAndPrepareInitialization(
 					method, "_stopwatch",
-					"cz.cuni.mff.d3s.spl.measure.DurationStopwatch",
+					"cz.cuni.mff.d3s.spl.core.DurationStopwatch",
 					"%1$s_stopwatch = cz.cuni.mff.d3s.spl.probe.ProbeStopwatch.start(%1$s_probe, %4$s);",
 					Utils.extraArgumentsToCode(filterArgs, method));
 

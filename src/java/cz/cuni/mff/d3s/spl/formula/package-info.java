@@ -14,17 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cz.cuni.mff.d3s.spl.probe;
-
-import cz.cuni.mff.d3s.spl.core.ProbeController;
-
-public class ManualProbeControllerBuilder extends ProbeControllerBuilderBase {
-	public ManualProbeControllerBuilder(String id) {
-		super();
-	}
-
-	@Override
-	protected ProbeController createController() {
-		return new ManualProbeController(invocationFilter, dataConsumer);
-	}
-}
+/**
+ * SPL formula parsing and evaluation.
+ *
+ */
+package cz.cuni.mff.d3s.spl.formula;

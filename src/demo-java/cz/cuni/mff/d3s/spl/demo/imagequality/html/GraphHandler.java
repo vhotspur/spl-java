@@ -25,10 +25,10 @@ import com.sun.net.httpserver.HttpHandler;
 
 import cz.cuni.mff.d3s.spl.core.Formula;
 import cz.cuni.mff.d3s.spl.core.Result;
-import cz.cuni.mff.d3s.spl.core.impl.SimpleFormulas;
 import cz.cuni.mff.d3s.spl.demo.imagequality.DataToVisualize;
 import cz.cuni.mff.d3s.spl.demo.imagequality.Graph;
-import cz.cuni.mff.d3s.spl.sources.SystemLoad;
+import cz.cuni.mff.d3s.spl.formula.SimpleFormulas;
+import cz.cuni.mff.d3s.spl.stock.SystemLoad;
 import de.erichseifert.gral.data.DataTable;
 
 public class GraphHandler implements HttpHandler {

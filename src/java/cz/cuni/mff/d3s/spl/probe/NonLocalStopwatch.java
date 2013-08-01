@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import cz.cuni.mff.d3s.spl.core.Probe;
+
 
 public class NonLocalStopwatch {
 	private static Map<Probe, Map<Object, MyStopwatch>> inProgress = new HashMap<>();
