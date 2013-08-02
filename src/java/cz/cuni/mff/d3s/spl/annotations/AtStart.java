@@ -31,6 +31,8 @@ import java.lang.annotation.Target;
  * than the normal code.
  * Not all classes may be already loaded and the environment may not be
  * fully initialized (i.e. main() not started yet).
+ * 
+ * @see cz.cuni.mff.d3s.spl.annotations
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

@@ -33,6 +33,8 @@ import java.lang.annotation.Target;
  * The agent uses Runtime.addShutdownHook to register the user method.
  * Abnormal termination of the JVM may cause that the user code is not
  * executed at all.
+ * 
+ * @see cz.cuni.mff.d3s.spl.annotations
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

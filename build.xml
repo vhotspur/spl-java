@@ -122,10 +122,10 @@
 			<compilerarg value="-Xlint:all"/>
 		</javac>
 	</target>
-	
-	
+		
 	<target name="refdoc" depends="compile-parser">
 		<mkdir dir="${javadoc.build.dir}" />
+		<echo message="Running JavaDoc..." />
 		<javadoc destdir="${javadoc.build.dir}" author="true"
 				version="true" use="true"
 				overview="${java.src.dir}/overview.html"
@@ -160,6 +160,12 @@
 				]]>
 			</bottom>
 		</javadoc>
+		<!-- Fix the links (stupid solution) -->
+		<echo message="Fixing HTML links..." />
+		<replace dir="${javadoc.build.dir}/cz/cuni/mff/d3s/spl/"
+			token="doc-files/jquery/"
+			value="../../../../../../doc-files/jquery/" />
+		<echo message="Copying extra files..." />
 		<copy todir="${javadoc.build.dir}">
 			<fileset dir="${java.src.dir}" includes="**/doc-files/**" erroronmissingdir="false"/>
 		</copy>
