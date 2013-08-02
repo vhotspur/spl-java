@@ -96,5 +96,80 @@ public class PlotRendering implements HttpHandler {
 }
 </pre>
 
+<h2>Usage</h2>
+<p>
+Although the framework tries to be as intuitive as possible, short
+explanation how to use it is probably necessary.
+The framework can be internally divided into several parts that can be
+(partially) used separately.
+More information is provided as documentation for individual
+classes/interfaces.
+</p>
+
+<h3>Data sources</h3>
+<p>
+Data sources that represent input data fed into SPL formulas.
+Typically, these input data are derived from method execution times but they
+can also represent system load or network round-trip-time.
+</p>
+<p>
+Data source is represented by the {@link cz.cuni.mff.d3s.spl.core.Data}
+interface.
+Usually, method execution times would be stored in an array-like structure,
+backed, for example, by {@link cz.cuni.mff.d3s.spl.stock.PlainBufferDataSource}.
+</p>
+<p>
+The framework by itself provides {@link cz.cuni.mff.d3s.spl.stock.SystemLoad}
+representing current system load.
+</p>
+
+<h3>Formulas</h3>
+<p>
+Formulas are the heart of the framework.
+They use the Stochastic Performance Logic to express assumptions/questions
+about application performance.
+They are represented by the {@link cz.cuni.mff.d3s.spl.core.Formula} interface.
+</p>
+<p>
+Although one can use implementation from {@link cz.cuni.mff.d3s.spl.formula}
+to build the formula, it is easier to express the formula as a string and
+parse it with {@link cz.cuni.mff.d3s.spl.formula.SplFormula#create}.
+</p>
+<p>
+Individual variables in the formula must always be binded to concrete data
+sources prior formula evaluation.
+This allows you to reuse to formula with different data sources
+(e.g. modeled performance vs. actually measured performance).
+Different interpretation of the formula can be used as well
+(see {@link cz.cuni.mff.d3s.spl.core.MathematicalInterpretation}).
+</p>
+
+<h3>Probes</h3>
+<p>
+{@link cz.cuni.mff.d3s.spl.core.Probe} is the place where data are collected.
+The probes can either created manually or inserted automatically.
+The automatically created probes are accompanied by probe controllers
+(@{link cz.cuni.mff.d3s.spl.core.ProbeController}) that can be used
+to activate them or deactivate them.
+</p>
+
+<h3>Instrumentation utilities</h3>
+<p>
+Sometimes, the developer can place the probes manually into the source code.
+But often it is much simpler to instrument the bytecode without touching
+the source code (that may not be available at all).
+For such situations, the framework offers few utilities to add measuring
+code to existing bytecode.
+The instrumentation is controlled by
+{@link cz.cuni.mff.d3s.spl.core.ProbeController}
+that is constructed based on user needs.
+There are several controller builders available in
+{@link cz.cuni.mff.d3s.spl.probe}.
+They allow the developer to specify when the data are supposed to be collected
+(via the {@link cz.cuni.mff.d3s.spl.core.InvocationFilter})
+or how the data shall be stored
+(via the {@link cz.cuni.mff.d3s.spl.core.MeasurementConsumer}).
+</p>
+
 </body>
 </html>
