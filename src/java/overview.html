@@ -105,6 +105,24 @@ The framework can be internally divided into several parts that can be
 More information is provided as documentation for individual
 classes/interfaces.
 </p>
+<p>
+For the instrumentation to work, it is necessary to use the framework
+as a Java agent (that is, using it as a normal library will not work).
+The generated agent has to be attached to the application on the command-line:
+</p>
+<pre class="syntax bash">
+java -javaagent:path/to/spl-agent.jar other-arguments
+</pre>
+<p>
+It is possible to specify an extra class that is annotated with
+{@link cz.cuni.mff.d3s.spl.annotations.AtStart} or
+{@link cz.cuni.mff.d3s.spl.annotations.AtExit} to execute code at start-up or
+shutdown of the application.
+This class is specified through <code>spl.class</code> parameter:
+</p>
+<pre class="syntax bash">
+java -javaagent:path/to/spl-agent.jar=spl.class=pkg.with.your.class.Name other-arguments
+</pre>
 
 <h3>Data sources</h3>
 <p>
