@@ -18,6 +18,8 @@ package cz.cuni.mff.d3s.spl.demo.imagequality;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import com.sun.net.httpserver.HttpServer;
 
@@ -26,9 +28,10 @@ import cz.cuni.mff.d3s.spl.demo.imagequality.html.GraphHandler;
 public class Main {
 	public static void main(String[] args) throws IOException {
 		InetSocketAddress addr = new InetSocketAddress(8888);
-		HttpServer server = HttpServer.create(addr, 10);
+		HttpServer server = HttpServer.create(addr, 100);
+		Executor executor = new ScheduledThreadPoolExecutor(20);
 		server.createContext("/", new GraphHandler());
-		server.setExecutor(null);
+		server.setExecutor(executor);
 		
 		server.start();
 		
