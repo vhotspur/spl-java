@@ -32,6 +32,8 @@ import cz.cuni.mff.d3s.spl.stock.SystemLoad;
 import de.erichseifert.gral.data.DataTable;
 
 public class GraphHandler implements HttpHandler {
+	private static boolean beAdaptive = true;
+	
 	private Formula machineIdle;
 	private Formula smallLoad;
 	
@@ -46,12 +48,16 @@ public class GraphHandler implements HttpHandler {
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
 		DataTable values = null;
-		if (machineIdle.evaluate() == Result.TRUE) {
-			values = DataToVisualize.getHourly();
-		} else if (smallLoad.evaluate() == Result.TRUE) {
-			values = DataToVisualize.getDaily();
+		if (beAdaptive) {
+			if (machineIdle.evaluate() == Result.TRUE) {
+				values = DataToVisualize.getHourly();
+			} else if (smallLoad.evaluate() == Result.TRUE) {
+				values = DataToVisualize.getDaily();
+			} else {
+				values = DataToVisualize.getWeekly();
+			}
 		} else {
-			values = DataToVisualize.getWeekly();
+			values = DataToVisualize.getHourly();
 		}
 		
 		Graph graph = new Graph(values);
