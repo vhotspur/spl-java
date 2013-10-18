@@ -38,6 +38,7 @@ public class SystemLoad implements Data {
 	@Override
 	public StatisticSnapshot getStatisticSnapshot() {
 		double load = osMxBean.getSystemLoadAverage();
+		load = load / osMxBean.getAvailableProcessors();
 		if (load < 0) {
 			load = 0.1; // FIXME: what to do with this
 		}
