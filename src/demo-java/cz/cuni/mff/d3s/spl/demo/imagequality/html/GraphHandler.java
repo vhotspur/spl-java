@@ -32,10 +32,16 @@ import cz.cuni.mff.d3s.spl.stock.SystemLoad;
 import de.erichseifert.gral.data.DataTable;
 
 public class GraphHandler implements HttpHandler {
-	private static boolean beAdaptive = true;
+	private boolean beAdaptive = true;
 	
 	private Formula machineIdle;
 	private Formula smallLoad;
+	
+	public static GraphHandler createNonAdaptive() {
+		GraphHandler result = new GraphHandler();
+		result.beAdaptive = false;
+		return result;
+	}
 	
 	public GraphHandler() {
 		cz.cuni.mff.d3s.spl.core.Data load = SystemLoad.INSTANCE;

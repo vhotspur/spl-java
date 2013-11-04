@@ -29,8 +29,9 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		InetSocketAddress addr = new InetSocketAddress(8888);
 		HttpServer server = HttpServer.create(addr, 100);
+		server.createContext("/graph.png", new GraphHandler());
+		server.createContext("/full.png", GraphHandler.createNonAdaptive());
 		Executor executor = new ScheduledThreadPoolExecutor(20);
-		server.createContext("/", new GraphHandler());
 		server.setExecutor(executor);
 		
 		server.start();
