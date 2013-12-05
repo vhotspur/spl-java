@@ -122,6 +122,19 @@
 			<compilerarg value="-Xlint:all"/>
 		</javac>
 	</target>
+	
+	<target name="demos-jar" depends="compile-demos">
+		<mkdir dir="${jar.build.dir}" />
+		<jar
+			destfile="${jar.build.dir}/demos.jar"
+			basedir="${demo.classes.build.dir}"
+			includes="cz/cuni/mff/d3s/spl/demo/**"
+		>
+			<zipgroupfileset dir="${lib.dir}" includes="**/gral-core-0.9-SNAPSHOT.jar" />
+			<manifest>
+			</manifest>
+		</jar>
+	</target>
 		
 	<target name="refdoc" depends="compile-parser">
 		<mkdir dir="${javadoc.build.dir}" />
