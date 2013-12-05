@@ -16,6 +16,8 @@
  */
 package cz.cuni.mff.d3s.spl.demo.imagequality;
 
+/** Raw source data for visualization.
+ */
 public class RawData {
 	/** Samples to visualize.
 	 * The data were generated using following R snippet:

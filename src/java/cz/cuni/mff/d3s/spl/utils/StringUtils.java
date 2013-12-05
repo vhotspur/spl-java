@@ -18,8 +18,14 @@ package cz.cuni.mff.d3s.spl.utils;
 
 import java.util.List;
 
+/** Various string utilities. */
 public class StringUtils {
 	
+	/** Perform revers of split on a list.
+	 * 
+	 * @param list Members to be joined.
+	 * @return String representation of all members, connected by comma.
+	 */
 	public static String join(List<?> list) {
 		if (list.isEmpty()) {
 			return "";
@@ -36,6 +42,11 @@ public class StringUtils {
 		return result.toString();
 	}
 	
+	/** Perform revers of split on all arguments.
+	 * 
+	 * @param objects Objects to be joined.
+	 * @return String representation of all objects, connected by comma.
+	 */
 	public static String join(Object... objects) {
 		if (objects.length == 0) {
 			return "";
@@ -52,6 +63,11 @@ public class StringUtils {
 		return result.toString();
 	}
 	
+	/** Format time in reasonable units.
+	 *  
+	 * @param nanos Time duration in nanoseconds.
+	 * @return Reasonable representation of the given name with unit appended.
+	 */
 	public static String formatTimeUnits(double nanos) {
 		if (nanos < 1000) {
 			return String.format("%.0fns", nanos);

@@ -31,6 +31,8 @@ import cz.cuni.mff.d3s.spl.formula.SimpleFormulas;
 import cz.cuni.mff.d3s.spl.stock.SystemLoad;
 import de.erichseifert.gral.data.DataTable;
 
+/** HTTP handler for drawing adaptive graph.
+ */
 public class GraphHandler implements HttpHandler {
 	private boolean beAdaptive = true;
 	

@@ -26,6 +26,8 @@ import cz.cuni.mff.d3s.spl.probe.InstrumentationProbeControllerBuilder;
 import cz.cuni.mff.d3s.spl.stock.PlainBufferDataSource;
 import cz.cuni.mff.d3s.spl.utils.StringUtils;
 
+/** Monitoring how performance changes over time.
+ */
 public class Monitor implements Runnable {
 	private static final int MILLIS_TO_NANOS = 1000 * 1000;
 	private static final int MIN_SAMPLE_COUNT = 5;

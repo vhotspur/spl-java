@@ -20,6 +20,8 @@ import com.sun.net.httpserver.HttpExchange;
 
 import cz.cuni.mff.d3s.spl.core.InvocationFilter;
 
+/** Invocation filter to accept only HTTP/GET requests.
+ */
 public class FilterByMethod implements InvocationFilter {
 
 	@Override

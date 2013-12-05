@@ -29,6 +29,8 @@ import de.erichseifert.gral.plots.lines.DefaultLineRenderer2D;
 import de.erichseifert.gral.plots.lines.LineRenderer;
 import de.erichseifert.gral.util.Insets2D;
 
+/** Plot rendering.
+ */
 public class Graph {
 	private DataTable data;
 	private XYPlot plot = null;

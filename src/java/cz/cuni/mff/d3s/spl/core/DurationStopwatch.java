@@ -16,6 +16,15 @@
  */
 package cz.cuni.mff.d3s.spl.core;
 
+/** Callback-style interface for finishing a measurement.
+ * 
+ * The method done is executed once the measured action completes.
+ * 
+ */
 public interface DurationStopwatch {
+	/** Executed when measured action is completed.
+	 * 
+	 * @param args Custom arguments for whatever use.
+	 */
 	public void done(Object... args);
 }

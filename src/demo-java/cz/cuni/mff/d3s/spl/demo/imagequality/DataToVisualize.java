@@ -21,6 +21,8 @@ import java.util.List;
 
 import de.erichseifert.gral.data.DataTable;
 
+/** Source data for visualization.
+ */
 public class DataToVisualize {
 	private static List<Pair<Long, Long>> hourly;
 	private static List<Pair<Long, Long>> daily;

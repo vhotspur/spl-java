@@ -25,6 +25,8 @@ import com.sun.net.httpserver.HttpServer;
 
 import cz.cuni.mff.d3s.spl.demo.imagequality.html.GraphHandler;
 
+/** Main server class.
+ */
 public class Main {
 	public static void main(String[] args) throws IOException {
 		InetSocketAddress addr = new InetSocketAddress(8888);

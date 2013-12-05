@@ -14,24 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cz.cuni.mff.d3s.spl.core;
-
-/** Controller for a probe allowing to turn measuring on and off.
+/** Demo: image-quality adaptation (HTML parts).
+ *
  */
-public interface ProbeController {
-	/** Activate the probe: allow measuring.
-	 *
-	 */
-	public void activate();
-	
-	/** Deactive the probe: do not measure anything.
-	 *
-	 */
-	public void deactivate();
-	
-	/** Get the probe this controller manages.
-	 * 
-	 * @return The managed probe.
-	 */
-	public Probe getProbe();
-}
+package cz.cuni.mff.d3s.spl.demo.imagequality.html;

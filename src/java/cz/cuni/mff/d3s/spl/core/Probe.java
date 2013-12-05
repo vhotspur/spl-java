@@ -16,7 +16,37 @@
  */
 package cz.cuni.mff.d3s.spl.core;
 
+/** Probe: a place where measuring happens.
+ * <P>
+ * Probe is a generic representation of a place in code where
+ * something needs to be measured.
+ * <P>
+ * Probe can be active or inactive.
+ * When the probe is active, the data are collected and submitted
+ * for processing.
+ * Inactive probe shall not do any measuring etc. and shall have a
+ * minimal (preferably none) overhead.
+ */
 public interface Probe {
+	/** Tells whether this probe is currently active.
+	 *
+	 * Typically, the arguments are only passed to
+	 * {@link InvocationFilter} and its result is
+	 * returned.
+	 *
+	 * @param args Custom arguments for whatever use.
+	 * @return Whether this probe is currently collecting data.
+	 */
 	public boolean isActive(Object... args);
+	
+	/** Submit new measured value.
+	 *
+	 * Typically, the values are only passed to
+	 * {@link MeasurementConsumer}.
+	 *
+	 * @param when Wall-clock time of the event.
+	 * @param duration Duration of the event.
+	 * @param args Custom arguments for whatever use.
+	 */
 	public void submit(long when, long duration, Object... args);
 }
