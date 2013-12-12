@@ -16,6 +16,7 @@
  */
 package cz.cuni.mff.d3s.spl.demo.sandbox.priorities;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.util.HashMap;
@@ -34,16 +35,26 @@ class Utilities {
 		for (String keyval : pairs) {
 			String tmp[] = keyval.split("[=]", 2);
 			
-			String key = URLDecoder.decode(tmp[0]);
+			String key = decodeUtf8(tmp[0]);
 			String value = null;
 			
 			if (tmp.length > 1) {
-				value = URLDecoder.decode(tmp[1]);
+				value = decodeUtf8(tmp[1]);
 			}
 			
 			result.put(key,  value);
 		}
 		
 		return result;
+	}
+	
+	protected static String decodeUtf8(String value) {
+		try {
+			return URLDecoder.decode(value, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			/* This really shall not happen. */
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
