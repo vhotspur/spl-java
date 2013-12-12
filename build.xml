@@ -269,6 +269,20 @@
 		</java>
 	</target>
 	
+	<target name="run-demo-priorities" depends="compile-demos,agent">
+		<java classname="cz.cuni.mff.d3s.spl.demo.sandbox.priorities.Main"
+			fork="yes">
+			<classpath>
+				<pathelement path="${classes.build.dir}" />
+				<pathelement path="${lib.dir}/gral-core-0.9-SNAPSHOT.jar" />
+				<pathelement path="${demo.classes.build.dir}"/>
+			</classpath>
+			<jvmarg value="-javaagent:${jar.build.dir}/${agent.jar.file}=spl.class=cz.cuni.mff.d3s.spl.demo.sandbox.priorities.Monitor" />
+			<jvmarg value="-Dadjust.period=${adjust.period}" />
+			<jvmarg value="-Dadjust.strategy=${adjust.strategy}" />
+		</java>
+	</target>
+	
 	<target name="clean">
 		<delete dir="${build.dir}" />
 	</target>
