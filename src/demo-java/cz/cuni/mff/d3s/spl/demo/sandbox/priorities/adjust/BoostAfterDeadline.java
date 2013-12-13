@@ -56,4 +56,9 @@ public class BoostAfterDeadline extends Adjust {
 			sleep(sleepTimeMillis);
 		}
 	}
+	
+	@Override
+	public void requestComplete(Thread t) {
+		t.setPriority(Thread.MIN_PRIORITY);
+	}
 }

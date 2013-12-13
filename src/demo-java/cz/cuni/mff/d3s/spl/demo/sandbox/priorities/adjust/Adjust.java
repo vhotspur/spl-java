@@ -30,15 +30,17 @@ public abstract class Adjust implements Runnable {
 		startTimes = st;
 	}
 	
+	public void requestComplete(Thread currentThread) {
+	}
+	
 	protected void sleep(long millis) {
 		if (millis <= 0) {
 			return;
 		}
 		
-			try {
-				Thread.sleep(millis, 0);
-			} catch (InterruptedException e) {
-			}
-		
+		try {
+			Thread.sleep(millis, 0);
+		} catch (InterruptedException e) {
+		}
 	}
 }

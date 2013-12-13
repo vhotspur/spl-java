@@ -78,6 +78,9 @@ public class Monitor {
 	public static void announceHandleStop() {
 		Thread t = Thread.currentThread();
 		startTimes.put(t, Long.valueOf(0));
+		if (adjustment != null) {
+			adjustment.requestComplete(t);
+		}
 		if (changePriorities) {
 			t.setPriority(Thread.MIN_PRIORITY);
 		}
