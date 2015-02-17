@@ -42,6 +42,27 @@ public class StringUtils {
 		return result.toString();
 	}
 	
+	/** Perform revers of split on a list.
+	 * 
+	 * @param list Members to be joined.
+	 * @return String representation of all members, connected by comma.
+	 */
+	public static String join(Object[] array, String sep) {
+		if (array.length == 0) {
+			return "";
+		}
+		StringBuilder result = new StringBuilder();
+		boolean afterFirst = false;
+		for (Object o : array) {
+			if (afterFirst) {
+				result.append(sep);
+			}
+			result.append(o.toString());
+			afterFirst = true;
+		}
+		return result.toString();
+	}
+	
 	/** Perform revers of split on all arguments.
 	 * 
 	 * @param objects Objects to be joined.
