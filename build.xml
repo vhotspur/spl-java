@@ -17,6 +17,7 @@
   -->
 <project basedir="." name="SPL" default="main">
 	<property file="local-settings.ini" />
+	<property file="demo-libselection.ini" />
 	
 	<property name="java.src.dir" value="src/java" />
 	<property name="java.test.src.dir" value="src/test-java" />
@@ -118,6 +119,9 @@
 			<classpath>
 				<pathelement path="${classes.build.dir}" />
 				<pathelement path="${lib.dir}/gral-core-0.9-SNAPSHOT.jar" />
+				<pathelement path="${lib.dir}/jcommon-1.0.21.jar" />
+				<pathelement path="${lib.dir}/jfreechart-1.0.17.jar" />
+				<pathelement path="${lib.dir}/xchart-2.3.0.jar" />
 			</classpath>
 			<compilerarg value="-Xlint:all"/>
 		</javac>
@@ -280,6 +284,38 @@
 			<jvmarg value="-javaagent:${jar.build.dir}/${agent.jar.file}=spl.class=cz.cuni.mff.d3s.spl.demo.sandbox.priorities.Monitor" />
 			<jvmarg value="-Dadjust.period=${adjust.period}" />
 			<jvmarg value="-Dadjust.strategy=${adjust.strategy}" />
+		</java>
+	</target>
+	
+	<target name="run-demo-libselection" depends="compile-demos,agent">
+		<echo message="Open ${java.demo.src.dir}/cz/cuni/mff/d3s/spl/demo/libselection/html/index.html" />
+		<echo message="in your browser." />
+		<java classname="cz.cuni.mff.d3s.spl.demo.libselection.Main"
+			fork="yes">
+			<jvmarg value="-Ddemo.libselection.plotter=${demo.libselection.plotter}" />
+			<classpath>
+				<pathelement path="${classes.build.dir}" />
+				<pathelement path="${lib.dir}/gral-core-0.9-SNAPSHOT.jar" />
+				<pathelement path="${lib.dir}/jcommon-1.0.21.jar" />
+				<pathelement path="${lib.dir}/jfreechart-1.0.17.jar" />
+				<pathelement path="${lib.dir}/xchart-2.3.0.jar" />
+				<pathelement path="${demo.classes.build.dir}"/>
+			</classpath>
+		</java>
+	</target>
+	
+	<target name="run-demo-libselection-bench" depends="compile-demos,agent">
+		<java classname="cz.cuni.mff.d3s.spl.demo.libselection.AdaptAtBuildTime"
+			fork="yes">
+			<jvmarg value="-Ddemo.libselection.inifile=demo-libselection.ini" />
+			<classpath>
+				<pathelement path="${classes.build.dir}" />
+				<pathelement path="${lib.dir}/gral-core-0.9-SNAPSHOT.jar" />
+				<pathelement path="${lib.dir}/jcommon-1.0.21.jar" />
+				<pathelement path="${lib.dir}/jfreechart-1.0.17.jar" />
+				<pathelement path="${lib.dir}/xchart-2.3.0.jar" />
+				<pathelement path="${demo.classes.build.dir}"/>
+			</classpath>
 		</java>
 	</target>
 	

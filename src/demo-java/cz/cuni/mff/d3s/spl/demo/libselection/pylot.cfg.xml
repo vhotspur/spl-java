@@ -1,0 +1,5 @@
+<testcases>
+    <case>
+	    <url>http://localhost:8888/graph.png</url>
+    </case>
+</testcases>
