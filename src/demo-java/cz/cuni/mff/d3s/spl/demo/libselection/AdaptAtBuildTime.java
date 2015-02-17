@@ -37,10 +37,11 @@ public class AdaptAtBuildTime {
 	private static final int MEASUREMENT_TIME = 60;
 	private static final String[] ALTERNATIVES = new String[] { "gral", "jfreechart", "xchart" };
 	
-	private static class NullOutputStream extends OutputStream {
+	public static class NullOutputStream extends OutputStream {
+		public static volatile int RESULT;
 		@Override
 		public void write(int b) throws IOException {
-			/* Do nothing. */
+			RESULT = b;
 		}
 		
 	}
