@@ -25,7 +25,7 @@
 	
 	<property name="lib.dir" value="lib" />
 	<property name="junit.jar.path" value="lib/junit-4.11.jar" />
-	<property name="javacc.home" value="/usr/share/java/javacc-5.0/" />
+	<property name="javacc.home" value="${lib.dir}/javacc-6.0/" />
 	
 	<property name="build.dir" value="out" />
 	<property name="classes.build.dir" value="${build.dir}/classes" />
