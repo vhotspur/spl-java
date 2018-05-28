@@ -4,7 +4,7 @@ os: Visual Studio 2015
 install:
   - ps: |
       Add-Type -AssemblyName System.IO.Compression.FileSystem
-      if (!(Test-Path -Path "C:\ant\apache-ant-1.9.9" )) {
+      if (!(Test-Path -Path "C:\ant\apache-ant-1.9.11" )) {
         (new-object System.Net.WebClient).DownloadFile(
           'https://archive.apache.org/dist/ant/binaries/apache-ant-1.9.11-bin.zip',
           'C:\apache-ant-1.9.11-bin.zip'
